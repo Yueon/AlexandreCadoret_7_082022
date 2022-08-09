@@ -6,6 +6,8 @@ const app = express();
 const helmet = require("helmet");
 // on importe path qui donne accès au chemin du système de fichiers
 const path = require('path');
+//
+const bodyParser = require('body-parser');
 //protège des attaques par injection
 const mongoSanitize = require('express-mongo-sanitize');
 // appel de dotenv qui stocke des variables d'environnement et ça servira pour l'appel mongodb en dessous.
@@ -14,6 +16,9 @@ require("dotenv").config({ path: "./config/.env" });
 require("./config/mgdb");
 // middleware d'helmet
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+//
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 //----------------------------------------------------------------------------------
 // CORS
 //----------------------------------------------------------------------------------
@@ -39,7 +44,11 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 //les routes
-//
+const userRoutes = require("./routes/user.routes");
+
+
+
+app.use("/api/auth", userRoutes);
 //
 
 // on exporte cette constante pour pouvoir y acceder depuis d'autres fichiers
