@@ -20,6 +20,7 @@ router.post("/signup", userController.signup);
 router.get('/', userController.getAllUsers);
 router.get('/:id', userController.userInfo);
 router.put("/:id", userController.updateUser);
+router.delete("/:id", userController.deleteUser);
 
 // on exporte router
 module.exports = router;

@@ -35,7 +35,7 @@ module.exports.userInfo = (req, res) => {
 
 module.exports.updateUser = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id);
+        return res.status(400).send('ID inconnu : ' + req.params.id)
 
     try {
         await UserModel.findOneAndUpdate(
@@ -53,3 +53,16 @@ module.exports.updateUser = async (req, res) => {
         return res.status(500).json({ message: err });
     }
 };
+
+module.exports.deleteUser = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID inconnu : ' + req.params.id)
+
+    try {
+        await UserModel.remove({ _id: req.params.id }).exec();
+        res.status(200).json({ message: "Profil supprimer." });
+    } catch (err) {
+        return res.status(500).json({ message: err });
+    }
+};
+
