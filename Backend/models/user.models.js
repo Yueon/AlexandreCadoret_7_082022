@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     // mot de passe
     password: { type: String, required: true },
     // image de profil
-    picture: { type: String, default: "" },
+    image: { type: String, default: "" },
     // bio
     bio: { type: String, max: 1024, },
 });
