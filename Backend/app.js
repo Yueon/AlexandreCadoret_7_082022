@@ -43,15 +43,14 @@ app.use((req, res, next) => {
 // middleware intercepte la requete et la transforme au bon format     
 app.use(express.json());
 
-//les routes
+// Routes files
 const userRoutes = require("./routes/user.routes");
 const messagesRoutes = require('./routes/messages.routes');
 
-
-
+// Routes
 app.use("/api/auth", userRoutes);
 app.use("/api/post", messagesRoutes);
-//
+
 
 // on exporte cette constante pour pouvoir y acceder depuis d'autres fichiers
 module.exports = app;

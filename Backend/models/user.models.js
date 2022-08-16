@@ -20,12 +20,6 @@ const userSchema = new mongoose.Schema({
     admin: { type: Boolean, default: false },
 });
 
-/*userSchema.pre("save", async function (next) {
-    const salt = await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});*/
-
 // exportation du shema modele
 const UserModel = mongoose.model("user", userSchema);
 module.exports = UserModel;

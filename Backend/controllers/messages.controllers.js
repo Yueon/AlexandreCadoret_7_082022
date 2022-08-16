@@ -147,7 +147,8 @@ module.exports.commentPost = (req, res) => {
         return res.status(400).send('ID inconnu : ' + req.params.id);
 
     try {
-        return PostModel.findByIdAndUpdate(
+        console.log('req.body.commenterId', req.body)
+        return postModel.findByIdAndUpdate(
             req.params.id,
             {
                 $push: {
@@ -155,7 +156,7 @@ module.exports.commentPost = (req, res) => {
                         commenterId: req.body.commenterId,
                         commenterPseudo: req.body.commenterPseudo,
                         text: req.body.text,
-                        timestamp: new Date().getTime(),
+                        timestamps: new Date().getTime(),
                     },
                 },
             },
