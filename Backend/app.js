@@ -45,10 +45,12 @@ app.use(express.json());
 
 //les routes
 const userRoutes = require("./routes/user.routes");
+const messagesRoutes = require('./routes/messages.routes');
 
 
 
 app.use("/api/auth", userRoutes);
+app.use("/api/post", messagesRoutes);
 //
 
 // on exporte cette constante pour pouvoir y acceder depuis d'autres fichiers
