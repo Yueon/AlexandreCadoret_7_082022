@@ -13,7 +13,11 @@ const userSchema = new mongoose.Schema({
     // image de profil
     image: { type: String, default: "" },
     // bio
-    bio: { type: String, max: 1024, },
+    bio: { type: String, max: 1024, default: "" },
+    // date dernière connexion
+    date_deco: { type: Date, default: '2000-10-15 15:45:00' },
+    // Admin
+    admin: { type: Boolean, default: false },
 });
 
 /*userSchema.pre("save", async function (next) {

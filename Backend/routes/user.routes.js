@@ -2,6 +2,8 @@
 const express = require("express");
 // on créer un routeur avec la méthode Router() d'express
 const router = express.Router();
+const auth = require("../middleware/auth");
+const multer = require("../middleware/multer-config");
 // appel de rate limiter
 // limiter le nombre de requête que peut faire un client
 const raterLimit = require("express-rate-limit");
@@ -17,11 +19,12 @@ const userController = require('../controllers/user.controllers');
 
 // ROUTES USER
 router.post("/signup", userController.signup);
-router.post("/login", userController.login);
-router.get('/', userController.getAllUsers);
+router.post("/login", limiter, userController.login);
+router.get("/logout", userController.logout)
+router.get('/', auth, userController.getAllUsers);
 router.get('/:id', userController.userInfo);
 router.put("/:id", userController.updateUser);
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id", auth, userController.deleteUser);
 
 // on exporte router
 module.exports = router;

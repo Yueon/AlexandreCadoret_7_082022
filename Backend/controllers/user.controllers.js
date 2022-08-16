@@ -24,6 +24,7 @@ module.exports.signup = (req, res, next) => {
                         "host"
                     )}/images/defaut/imagedefaut.png`,
                     moderateur: false,
+                    date_deco: '2000-10-15 15:45:00'
                 })
                     .then(() =>
                         res
@@ -42,43 +43,56 @@ module.exports.signup = (req, res, next) => {
     }
 };
 
-// identification utilisateur grace a login
 module.exports.login = (req, res, next) => {
-    // on trouve l'adresse qui est rentré par l'utilisateur
-    userModel.findOne({ email: req.body.email })
+    userModel.findOne({ where: { email: req.body.email }, })
         .then(user => {
-            // si la requete email ne correspond pas à un utilisateur 
             if (!user) {
-                // status 401 Unauthorized et message en json
                 return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
             }
-            // si c'est ok bcrypt compare le mot de passe de user avec celui rentré par l'utilisateur
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {
                     if (!valid) {
-                        // retourne un status 401 Unauthorized et un message en json
                         return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
                     }
-                    // si c'est ok status 201 Created et renvoi un objet json
                     res.status(200).json({
-                        // renvoi l'user id
                         userId: user._id,
-                        // renvoi un token encodé
                         token: jwt.sign(
-                            // user id identique a la requete d'authentification
                             { userId: user._id },
-                            // clé secrete pour encodage
                             process.env.TOKEN_SECRET_ALEATOIRE,
-                            // durée de vie du token
                             { expiresIn: process.env.TOKEN_TEMP }
                         )
                     });
                 })
-                // erreur status 500 Internal Server Error et message en json
                 .catch(error => res.status(500).json({ error }));
         })
-        // erreur status 500 Internal Server Error et message en json
         .catch(error => res.status(500).json({ error }));
+};
+
+module.exports.logout = (req, res, next) => {
+    let dateDeco = new Date();
+    userModel.findOne({
+        where: { id: req.body.userId, email: req.body.email },
+    })
+        .then((user) => {
+            if (!user) {
+                return res.status(401).json({ error });
+            } else {
+                userModel.update(
+                    {
+                        date_deco: dateDeco,
+                    },
+                    {
+                        where: {
+                            id: req.body.userId,
+                        },
+                    }
+                )
+                    .then(() => res.status(200).send(console.log('deconnection le: ' + dateDeco)))
+                    .catch((error) => res.status(400).json({ error }));
+                res.status(200).send("utilisateur déconnecté le " + dateDeco);
+            }
+        })
+        .catch((error) => res.status(500).json({ error }));
 };
 
 module.exports.getAllUsers = async (req, res) => {
