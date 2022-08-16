@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     // image de profil
     picture: { type: String, default: "" },
+    // bio
+    bio: { type: String, max: 1024, },
 });
 
 userSchema.pre("save", async function (next) {

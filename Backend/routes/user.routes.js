@@ -19,7 +19,7 @@ const userController = require('../controllers/user.controllers');
 router.post("/signup", userController.signup);
 router.get('/', userController.getAllUsers);
 router.get('/:id', userController.userInfo);
-
+router.put("/:id", userController.updateUser);
 
 // on exporte router
 module.exports = router;
