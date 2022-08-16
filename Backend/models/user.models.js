@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true, trim: true },
     // mot de passe
     password: { type: String, required: true },
+    // image de profil
+    picture: { type: String, default: "" },
 });
 
 userSchema.pre("save", async function (next) {
