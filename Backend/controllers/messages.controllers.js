@@ -45,7 +45,7 @@ module.exports.updatePost = (req, res) => {
 };
 
 module.exports.deletePost = (req, res) => {
-    if (!objectId.isValid(req.params.id))
+    if (!objectId.isValid(req.params.id) || user.moderateur === false)
         return res.status(400).send('ID inconnu : ' + req.params.id);
 
     postModel.findByIdAndRemove(req.params.id, (err, docs) => {
