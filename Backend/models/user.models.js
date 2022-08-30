@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema({
     bio: { type: String, max: 1024, default: "" },
     // date dernière connexion
     date_deco: { type: Date, default: '2000-10-15 15:45:00' },
-    // Admin
-    admin: { type: Boolean, default: false },
+    // moderateur
+    moderateur: { type: Boolean, default: false },
 });
 
 // exportation du shema modele

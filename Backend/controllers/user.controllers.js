@@ -44,7 +44,7 @@ module.exports.signup = (req, res, next) => {
 };
 
 module.exports.login = (req, res, next) => {
-    userModel.findOne({ where: { email: req.body.email }, })
+    userModel.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
                 return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });

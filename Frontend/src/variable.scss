@@ -2,4 +2,14 @@
 $color-primary: #FD2D01;
 $color-secondary: #FFD7D7;
 $color-Tertiary: #4E5166;
+
+$color-back-background: #eee;
+$color-cards-background: #fff;
+
+$color-danger: #bb2b35;
+$color-primary-light: lighten($color-primary, 45%);
+$color-primary-lighter: lighten($color-primary, 60%);
 // Fonts
+
+// Shadow
+$shadow: 0 0 13px #555;

@@ -1,0 +1,47 @@
+@import "../../../variable.scss";
+
+.header {
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 5px solid $color-primary;
+    color: $color-primary;
+    font-size: 1.2rem;
+    background-color: white;
+
+    &--wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        @media screen and (min-width: 650px){
+          justify-content: space-between;
+        }
+      }
+
+    &--logo {
+        width: 300px;
+    }
+
+    
+    &--nav {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        
+
+        a {
+        margin: 0 1rem;
+        transition: transform 300ms;
+        &:hover {
+            transform: translateY(0.3rem);
+        }
+        }
+    }
+}
+
+img {
+    width: 60px;
+    height: 75px;
+    border-radius: 50%;
+}

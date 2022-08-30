@@ -12,6 +12,8 @@ module.exports.readPost = (req, res) => {
 module.exports.createPost = async (req, res) => {
     const newPost = new postModel({
         posterId: req.body.posterId,
+        posterPseudo: req.body.posterPseudo,
+        posterAdmin: req.body.posterAdmin,
         message: req.body.message,
         video: req.body.video,
         likers: [],
@@ -44,14 +46,40 @@ module.exports.updatePost = (req, res) => {
     )
 };
 
-module.exports.deletePost = (req, res) => {
-    if (!objectId.isValid(req.params.id) || user.moderateur === false)
-        return res.status(400).send('ID inconnu : ' + req.params.id);
+/*module.exports.deletePost = (req, res, next) => {
+    userModel.findOne({ _id: req.params.id })
+        .then(userModel => {
+            if (!objectId.isValid(req.params.id))
+                return res.status(400).send('ID inconnu : ' + req.params.id);
 
-    postModel.findByIdAndRemove(req.params.id, (err, docs) => {
-        if (!err) res.send(docs);
-        else console.log("Delete error : " + err);
-    });
+            postModel.findByIdAndRemove(req.params.id, (err, docs) => {
+                if (!err) res.send(docs);
+                else console.log("Delete error : " + err);
+            });
+        })
+};*/
+
+module.exports.deletePost = (req, res, next) => {
+    postModel.findOne({ _id: req.params.id })
+        .then(postModel => {
+            if (!postModel) {
+                return res.status(401).json({ error });
+            }
+            userModel.findOne({ _id: req.params.id })
+                .then(userModel => {
+                    if (!userModel) {
+                        return res.status(401).json({ error });
+                    }
+                    if (userModel.moderateur === true || postModel.userId === req.auth.userId) {
+                        postModel.remove({ _id: req.params.id })
+                            .then(() => res.status(200).json({ message: "message supprimé!" }))
+                            .catch((error) => res.status(400).json({ error }));
+                    } else {
+                        return res.status(403).send("unauthorized request");
+                    }
+                })
+                .catch((error) => res.status(400).send({ error: "vous ne pouvez pas effacer ce message" }));
+        })
 };
 
 module.exports.like = (req, res, next) => {

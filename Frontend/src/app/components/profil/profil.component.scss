@@ -1,0 +1,40 @@
+@import "../../../variable.scss";
+
+.profile {
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: $shadow;
+    background: $color-cards-background;
+    h1 {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    .description {
+        margin-top: 1em;
+    }
+    &--top {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        &>div {
+          margin: 1em;
+        }
+      }
+    
+      &--image {
+        img {
+          width: 100%;
+          max-width: 350px;
+          border: 1px solid $color-primary;
+        }
+      }
+    
+      &--description {
+        width: 100%;
+        max-width: 350px;
+    }
+}

@@ -1,0 +1,59 @@
+@import "../../../../variable.scss";
+
+.login {
+  max-width: 500px;
+  margin: 2em auto;
+
+  &--form {
+    border: 1px solid $color-primary;
+    border-radius: 5px;
+    background: $color-cards-background;
+    padding: 1.5em 2em;
+
+    fieldset {
+      border: none;
+      margin: 1em 0;
+    }
+
+    label {
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid $color-primary;
+      &:focus {
+        border: none;
+        border-bottom: 3px solid $color-primary;
+      }
+      &:invalid {
+        border-bottom: 3px solid $color-danger;
+      }
+    }
+
+    .btn {
+      display: block;
+      margin: auto;
+      padding: 0.7em 1.5em;
+      background: $color-primary-lighter;
+      border: 1px solid $color-primary;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background: $color-primary-light;
+      }
+    }
+  }
+  p {
+    text-align: center;
+    margin-top: 0.5em;
+  }
+  a {
+    color: $color-primary;
+    font-weight: bold;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
