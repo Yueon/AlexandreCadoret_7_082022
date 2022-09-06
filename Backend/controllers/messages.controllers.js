@@ -27,37 +27,40 @@ module.exports.createPost = async (req, res) => {
     }
 };
 
-module.exports.updatePost = (req, res) => {
-    if (!objectId.isValid(req.params.id))
-        return res.status(400).send('ID inconnu : ' + req.params.id);
-
-    const updateRecord = {
-        message: req.body.message
-    }
-
-    postModel.findByIdAndUpdate(
-        req.params.id,
-        { $set: updateRecord },
-        { new: true },
-        (err, docs) => {
-            if (!err) res.send(docs);
-            else console.log("Update error : " + err);
-        }
-    )
-};
-
-/*module.exports.deletePost = (req, res, next) => {
-    userModel.findOne({ _id: req.params.id })
-        .then(userModel => {
-            if (!objectId.isValid(req.params.id))
-                return res.status(400).send('ID inconnu : ' + req.params.id);
-
-            postModel.findByIdAndRemove(req.params.id, (err, docs) => {
-                if (!err) res.send(docs);
-                else console.log("Delete error : " + err);
-            });
+module.exports.updatePost = (req, res, next) => {
+    postModel.findOne({ _id: req.params.id })
+        .then(postModel => {
+            if (!postModel) {
+                return res.status(401).json({ error });
+            }
+            userModel.findOne({ _id: req.auth.userId })
+                .then(userModel => {
+                    if (!userModel) {
+                        return res.status(401).json({ error });
+                    }
+                    if (userModel.moderateur === true || postModel.userId === req.auth.userId) {
+                        console.log("5")
+                        const updateRecord = {
+                            message: req.body.message
+                        }
+                        console.log("6")
+                        postModel.update(
+                            req.params.id,
+                            { $set: updateRecord },
+                            { new: true },
+                            console.log("7"),
+                            (err, docs) => {
+                                if (!err) res.send(docs);
+                                else console.log("Update error : " + err);
+                            }
+                        )
+                    } else {
+                        return res.status(403).send("unauthorized request");
+                    }
+                })
+                .catch((error) => res.status(400).send({ error: "vous ne pouvez pas modifié ce message" }));
         })
-};*/
+};
 
 module.exports.deletePost = (req, res, next) => {
     postModel.findOne({ _id: req.params.id })
@@ -65,7 +68,7 @@ module.exports.deletePost = (req, res, next) => {
             if (!postModel) {
                 return res.status(401).json({ error });
             }
-            userModel.findOne({ _id: req.params.id })
+            userModel.findOne({ _id: req.auth.userId })
                 .then(userModel => {
                     if (!userModel) {
                         return res.status(401).json({ error });

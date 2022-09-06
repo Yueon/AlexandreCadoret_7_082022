@@ -1,10 +1,10 @@
 <main class="main-wrapper">
     <div class="login">
-      <form class="login--form">
+      <form class="login--form" [formGroup]='signInForm' (ngSubmit)="onSubmit()">
         <h1>Créer un compte</h1>
         <fieldset>
           <label for="pseudo">Pseudo</label>
-          <input id="pseudo" type="pseudo" formControlName="pseudo">
+          <input id="pseudo" type="name" formControlName="pseudo">
         </fieldset>
         <fieldset>
           <label for="email">Email</label>
@@ -18,7 +18,7 @@
           <label for="passwordConfirmation">Confirmer le mot de passe</label>
           <input id="passwordConfirmation" type="password" formControlName="passwordConfirmation">
         </fieldset>
-        <button class="btn" type="submit">Se connecter</button>
+        <button class="btn" type="submit" [disabled]="signInForm.invalid">Se connecter</button>
       </form>
       <p>Vous avez déjà un compte ? <a routerLink="/login">Connecter vous !</a></p>
     </div>
