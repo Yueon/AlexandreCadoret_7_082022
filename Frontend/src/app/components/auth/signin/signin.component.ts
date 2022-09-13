@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../../../services/auth.service';
+import { MessagesService } from 'src/app/services/messages.service';
 import { HttpResponse } from '../../../interfaces/http-response';
 
 @Component({
@@ -11,11 +12,11 @@ import { HttpResponse } from '../../../interfaces/http-response';
 })
 export class SigninComponent implements OnInit {
 
-  //public signInForm: FormGroup;
+signInForm!: FormGroup;
 
   constructor(
-    public signInForm: FormGroup,
     private authService: AuthService,
+    private messagesService: MessagesService,
     private formBuilder: FormBuilder,
   ) { }
 
@@ -39,6 +40,8 @@ export class SigninComponent implements OnInit {
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {
           this.authService.loginUser(email, password);
+        } else {
+          this.messagesService.add(`Erreur: ${response.error.error}`);
         }
       })
   }

@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // middleware général ne prend pas d'adresse en premier paramètre, afin de s'appliquer à toutes les routes et sera appliqué à toutes les requetes envoyées au serveur
 app.use((req, res, next) => {
     // origine, droit d'accéder c'est tout le monde '*'
-    res.setHeader("Access-Control-Allow-Origin", '*');
+    res.setHeader("Access-Control-Allow-Origin", 'http://localhost:4200');
     // headers, ce sont les headers acceptés (en-tête)
     res.setHeader(
         "Access-Control-Allow-Headers",
@@ -38,6 +38,7 @@ app.use((req, res, next) => {
         "Access-Control-Allow-Methods",
         "GET, POST, PUT, DELETE, OPTIONS, PATCH"
     );
+    res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
 // middleware intercepte la requete et la transforme au bon format     

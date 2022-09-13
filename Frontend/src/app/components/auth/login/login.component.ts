@@ -10,8 +10,9 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
+signInForm!: FormGroup
+
   constructor(
-    public signInForm: FormGroup,
     private authService: AuthService,
     private formBuilder: FormBuilder,
   ) { }
@@ -29,6 +30,6 @@ export class LoginComponent implements OnInit {
 
   public onSubmit(): void {
     const { email, password } = this.signInForm.value;
-   // this.authService.loginUser(email, password);
+    this.authService.loginUser(email, password);
   }
 }

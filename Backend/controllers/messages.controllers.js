@@ -71,7 +71,7 @@ module.exports.deletePost = (req, res, next) => {
                     if (!userModel) {
                         return res.status(401).json({ error });
                     }
-                    if (userModel.moderateur === true || postModel.userId === req.auth.userId) {
+                    if (userModel.moderateur === true || postModel.posterId === req.auth.userId) {
                         postModel.remove({ _id: req.params.id })
                             .then(() => res.status(200).json({ message: "message supprimé!" }))
                             .catch((error) => res.status(400).json({ error }));

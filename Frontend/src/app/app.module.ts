@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -10,6 +11,7 @@ import { SigninComponent } from './components/auth/signin/signin.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { ProfilComponent } from './components/profil/profil.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { ProfilComponent } from './components/profil/profil.component';
     LoginComponent,
     MessagesComponent,
     ProfilComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import { ProfilComponent } from './components/profil/profil.component';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    ImageCropperModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
