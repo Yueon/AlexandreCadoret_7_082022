@@ -22,7 +22,7 @@ module.exports.signup = (req, res, next) => {
                     password: hash,
                     image: `${req.protocol}://${req.get(
                         "host"
-                    )}/images/defaut/imagedefaut.png`,
+                    )}/images/default/default_profile.png`,
                     moderateur: false,
                     date_deco: '2000-10-15 15:45:00'
                 })
@@ -104,7 +104,7 @@ module.exports.userInfo = (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID inconnu : ' + req.params.id)
 
-    UserModel.findById(req.params.id, (err, docs) => {
+    userModel.findById(req.params.id, (err, docs) => {
         if (!err) res.send(docs);
         else console.log('ID inconnu : ' + err);
     }).select('-password');

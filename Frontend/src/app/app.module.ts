@@ -3,6 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+
+import { AuthGuardService } from './services/auth-guard.service';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -12,6 +18,10 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { ProfilComponent } from './components/profil/profil.component';
 import { HomeComponent } from './components/home/home.component';
+import { AuthService } from './services/auth.service';
+import { PostComponent } from './components/post/post.component';
+import { PostWallComponent } from './components/post-wall/post-wall.component';
+import { HomeLaunchComponent } from './components/home-launch/home-launch.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +32,9 @@ import { HomeComponent } from './components/home/home.component';
     MessagesComponent,
     ProfilComponent,
     HomeComponent,
+    PostComponent,
+    PostWallComponent,
+    HomeLaunchComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,8 +43,12 @@ import { HomeComponent } from './components/home/home.component';
     HttpClientModule,
     AppRoutingModule,
     ImageCropperModule,
+    NoopAnimationsModule,
+    MatIconModule,
+    MatMenuModule,
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [AuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

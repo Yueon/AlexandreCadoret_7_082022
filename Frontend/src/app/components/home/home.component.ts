@@ -1,25 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
-import { AuthService } from '../../services/auth.service';
-import { MessagesService } from '../../services/messages.service';
-import { ImageService } from 'src/app/services/image.service';
-
-import { HttpResponse } from '../../interfaces/http-response';
+import { tap } from "rxjs";
+import { UserService } from "src/app/services/user.service";
+import { User } from "src/app/interfaces/user";
+import { PostComponent } from "src/app/components/post/post.component";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: "app-home",
+    templateUrl: "./home.component.html",
+    styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
+    user: User | undefined;
+    constructor(private userService: UserService, private dialog: MatDialog) {}
 
-  constructor(
-    public AuthService: AuthService,
-    private messagesService: MessagesService,
-    public ImageService: ImageService
-  ) { }
+    ngOnInit(): void {
+        this.userService.user$
+            .pipe(
+                tap((user) => {
+                    this.user = user;
+                })
+            )
+            .subscribe();
+    }
 
-  ngOnInit(): void {
-  }
-
+    displayForm() {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = false;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "600px";
+        dialogConfig.maxWidth = "80%";
+        dialogConfig.hasBackdrop = true;
+        this.dialog.open(PostComponent, dialogConfig);
+    }
 }

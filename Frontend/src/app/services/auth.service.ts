@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { environment } from 'src/environments/environment';
+
 import { HttpResponse } from '../interfaces/http-response';
 import { MessagesService } from './messages.service';
 import { User } from '../interfaces/user';
@@ -12,8 +14,16 @@ import { User } from '../interfaces/user';
   providedIn: 'root'
 })
 export class AuthService {
-  User!: User;
-  private userUrl = `http://localhost:3000/api/auth`;
+  public user!: User;
+  private access_token = "";
+  public userId = "";
+  private userUrl = `${environment.backendServer}/api/auth`;
+
+  loggedIn:boolean = false;
+
+  IsAuthenticated(){
+    return this.loggedIn;
+  }
 
   constructor(
     private httpClient: HttpClient,
@@ -25,19 +35,24 @@ export class AuthService {
     this.messagesService.add(`Authentification: ${message}`);
   }
 
-  public loginUser(email: string, password: string): void {
-    this.httpClient.post(`${this.userUrl}/login`, {email, password}, { withCredentials: true, observe: 'response' })
-    .pipe(catchError(err => {
-      return of(err);
-    }))
-    .subscribe((response: HttpResponse): void => {
-      if (response.status === 200) {
-        this.User = response.body;
-        this.router.navigate(['/home']);
-      } else {
-        this.log(`Erreur de connexion: ${response.error.error}`);
-      }
-    });
+  loginUser(email: string, password: string) {
+    return this.httpClient
+        .post<{
+            userId: string;
+            access_token: string;
+            token_type: string;
+            expires_in: string;
+        }>(this.userUrl + "/login", {
+            email: email,
+            password: password,
+        })
+        .pipe(
+            tap(({ userId, access_token }) => {
+                this.userId = userId;
+                this.access_token = access_token;
+                this.loggedIn = true;
+            })
+        );
   }
 
   public createUser(pseudo: string, email: string, password: string): Observable<HttpResponse>{
@@ -46,4 +61,8 @@ export class AuthService {
       return of(err);
     }));
   }
+
+  getUserId() {
+    return this.userId;
+}
 }

@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { catchError, EMPTY, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth.service';
+import { UserService } from '../../../services/user.service'
 
 @Component({
   selector: 'app-login',
@@ -11,10 +15,14 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
 
 signInForm!: FormGroup
+errorMsg!: string;
 
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
+    private userService: UserService,
+    private dialog: MatDialog,
+    private router: Router,
   ) { }
 
   public ngOnInit(): void {
@@ -30,6 +38,20 @@ signInForm!: FormGroup
 
   public onSubmit(): void {
     const { email, password } = this.signInForm.value;
-    this.authService.loginUser(email, password);
+    this.authService
+    .loginUser(email, password)
+    .pipe(
+      tap(() => {
+        const id = this.authService.getUserId();
+
+        this.userService.getUserById(id)
+        this.router.navigate(['/home']);
+      }),
+      catchError((error) => {
+        this.errorMsg = error.error.error;
+        return EMPTY;
+      })
+    )
+    .subscribe();
   }
 }

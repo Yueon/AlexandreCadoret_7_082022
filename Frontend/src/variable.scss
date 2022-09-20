@@ -3,6 +3,7 @@ $color-primary: #FD2D01;
 $color-secondary: #FFD7D7;
 $color-Tertiary: #4E5166;
 
+$color-text: #433a3a;
 $color-back-background: #eee;
 $color-cards-background: #fff;
 
@@ -12,4 +13,5 @@ $color-primary-lighter: lighten($color-primary, 60%);
 // Fonts
 
 // Shadow
-$shadow: 0 0 13px #555;
+$background-shadow: #c9cacc;
+$shadow: 0 0 13px rgb(49, 49, 49);

@@ -28,8 +28,6 @@
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: center;
-        
-
         a {
         margin: 0 1rem;
         transition: transform 300ms;
@@ -37,10 +35,15 @@
             transform: translateY(0.3rem);
         }
         }
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            border: 1px solid #000;
+        }
+        &--icone{
+            width: 30px;
+            color: $color-primary;
+        }
     }
-}
-
-img {
-    width: 60px;
-    height: 75px;
 }

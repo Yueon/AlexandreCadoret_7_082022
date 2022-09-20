@@ -15,7 +15,7 @@ const postSchemas = new mongoose.Schema(
             type: [
                 {
                     commenterId: String,
-                    commenterPseudo: String,
+                    posterPseudo: String,
                     text: String,
                     timestamp: Number,
                 }

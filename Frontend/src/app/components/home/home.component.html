@@ -1,38 +1,10 @@
-<main class="main-wrapper post">
-    <h1>Je suis un titre</h1>
-
-    <!-- Ajouter un post-->
-    <section class="post--add">
-        <form>
-            <h2>Ajouter votre message</h2>
-            <p>
-                <label for="postAdd--content" class="hidden">Votre message a publier</label>
-                <textarea name="postAdd--content" id="postAdd--content" placeholder="Ajouter votre texte"></textarea>
-            </p>
-            <p class="buttons">
-                <label for="postAdd--image" class="btn">Choisir une image
-                    <input type="file" id="postAdd--image">
-                </label>
-                <button type="submit" class="btn">Envoyer !</button>
-            </p>
-        </form>
-        <div id="cropper" class="cropper hidden">
-            <image-cropper
-                class="profil--cropper"
-                [imageChangedEvent]="ImageService.imageChangedEvent"
-                [maintainAspectRatio]="false"
-                format="png"
-                (imageCropped)="ImageService.imageCropped($event)"
-                (imageLoaded)="ImageService.imageLoaded()"
-                (loadImageFailed)="ImageService.loadImageFailed()"
-            ></image-cropper>
-            <!--resizeToWidth="800"-->
-            <button class="btn" (click)="ImageService.onCroppedImageDone()">OK</button>
-        </div>
-    </section>
-
-    <!-- Liste des posts-->
-    <section>
-        
-    </section>
+<main class="main-wrapper">
+    <div class="profil-poster__image">
+        <img class="profil-img" *ngIf="user" src="../../../assets/default_profile.png" alt="" />
+    </div>
+    <div (click)="displayForm()" class="post-poster__texte">
+        <p class="post-poster__message">Ajouter votre texte</p>
+    </div>
 </main>
+
+<app-post-wall></app-post-wall>
