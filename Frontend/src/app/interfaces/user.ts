@@ -1,7 +1,9 @@
-export interface User {
+export interface UserModel {
   userId: number;
   pseudo: string;
   email: string;
-  pictureUrl: string;
+  image: string;
+  bio: string,
+  date_deco: Date,
   moderateur: boolean;
 }

@@ -4,9 +4,8 @@ const postSchemas = new mongoose.Schema(
     {
         posterId: { type: String, require: true },
         posterPseudo: { type: String, require: true },
-        message: { type: String, trim: true, maxlength: 500 },
+        content: { type: String, trim: true, maxlength: 500 },
         picture: { type: String },
-        video: { type: String },
         likes: { type: Number, required: true, default: 0 },
         dislikes: { type: Number, required: true, default: 0 },
         usersLiked: { type: [String] },
@@ -26,4 +25,5 @@ const postSchemas = new mongoose.Schema(
     { timestamps: true, }
 );
 
-module.exports = mongoose.model('post', postSchemas);
+const PostModel = mongoose.model('post', postSchemas);
+module.exports = PostModel;

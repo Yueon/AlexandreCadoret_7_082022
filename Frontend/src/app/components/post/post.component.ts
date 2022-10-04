@@ -5,6 +5,8 @@ import { catchError, distinctUntilChanged, EMPTY, tap } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 
 import { PublicationsService } from 'src/app/services/publications.service';
+import { HttpResponse } from 'src/app/interfaces/http-response';
+import { MessagesService } from "../../services/messages.service";
 
 @Component({
   selector: 'app-post',
@@ -14,7 +16,6 @@ import { PublicationsService } from 'src/app/services/publications.service';
 export class PostComponent implements OnInit {
 
   postForm!: FormGroup;
-  leftCharLength?: number;
   selectedFile: File | undefined;
   url: any = "";
 
@@ -23,10 +24,10 @@ export class PostComponent implements OnInit {
     private PublicationsService: PublicationsService,
     private router: Router,
     private dialog: MatDialog,
+    private messagesService: MessagesService,
   ) { }
 
   ngOnInit(): void {
-    this.leftCharLength = 70;
     this.postForm = this.formBuilder.group({
         content: [null, [Validators.required, Validators.maxLength(1000)]],
         file: [null, [Validators.required]],
@@ -39,27 +40,26 @@ export class PostComponent implements OnInit {
 
   createPost() {
     const content = this.postForm.get("content")!.value;
-    const file = this.postForm.get("file")!.value;
-    let postContent;
-    this.selectedFile ? (postContent = this.selectedFile) : (postContent = content);
-
+    console.log('content', content);
+    const picture = this.postForm.get("file")!.value;
+    console.log('picture', picture);
+    const formData = new FormData();
+    if (picture !== null) {
+        formData.append('picture', picture);
+    }
+    formData.append('content', content);
+    
     this.PublicationsService
-        .createPost(postContent)
+        .newPublication(formData)
         .pipe(
             tap(() => {
-                this.router.navigateByUrl("", { skipLocationChange: true }).then(() => {
+                this.router.navigateByUrl("", { skipLocationChange: true}).then(() => {
+                    this.router.navigate(["/home"]);
                 });
-                this.postForm.patchValue({ content: "" });
-
-                this.selectedFile = undefined;
+                this.postForm.patchValue({ content: ""});
+                this.postForm.patchValue({ file: undefined});
                 this.url = "";
-            }),
-            catchError((error) => {
-                this.postForm.patchValue({ content: "" });
-
-                this.selectedFile = undefined;
-                this.url = "";
-                return EMPTY;
+                this.dialog.closeAll();
             })
         )
         .subscribe();

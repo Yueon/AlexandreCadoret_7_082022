@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
@@ -22,6 +22,7 @@ import { AuthService } from './services/auth.service';
 import { PostComponent } from './components/post/post.component';
 import { PostWallComponent } from './components/post-wall/post-wall.component';
 import { HomeLaunchComponent } from './components/home-launch/home-launch.component';
+import { AuthInterceptor } from 'src/interceptors/auth-interceptors';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,7 @@ import { HomeLaunchComponent } from './components/home-launch/home-launch.compon
     MatMenuModule,
     MatDialogModule,
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

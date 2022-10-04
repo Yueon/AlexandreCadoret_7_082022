@@ -33,17 +33,18 @@
         transition: transform 300ms;
         &:hover {
             transform: translateY(0.3rem);
-        }
-        }
-        img {
-            width: 50px;
-            height: 50px;
-            border-radius: 100%;
-            border: 1px solid #000;
-        }
+        }}
         &--icone{
             width: 30px;
             color: $color-primary;
+        }
+        &--profil{
+            width: 75px;
+        height: 75px;
+        border-radius: 50%;
+        margin: 0 20px;
+        object-fit: cover;
+        cursor: pointer;
         }
     }
 }

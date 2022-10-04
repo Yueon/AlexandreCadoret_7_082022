@@ -14,8 +14,8 @@ module.exports.createPost = async (req, res) => {
         posterId: req.body.posterId,
         posterPseudo: req.body.posterPseudo,
         posterAdmin: req.body.posterAdmin,
-        message: req.body.message,
-        video: req.body.video,
+        content: req.body.content,
+        picture: req.body.picture,
         likers: [],
         comments: [],
     });
@@ -40,7 +40,7 @@ module.exports.updatePost = (req, res, next) => {
                     }
                     if (userModel.moderateur === true || postModel.posterId === req.auth.userId) {
                         const updateRecord = {
-                            message: req.body.message
+                            content: req.body.content
                         }
                         postModel.update(
                             { $set: updateRecord },

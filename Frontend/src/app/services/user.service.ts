@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, tap } from "rxjs";
-import { User } from "src/app/interfaces/user";
+import { UserModel } from "src/app/interfaces/user";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -14,10 +14,10 @@ export class UserService {
 
     getUserById(id: string) {
         this.http
-            .get<User>(this.backendServer + "/api/auth/" + id)
+            .get<UserModel>(this.backendServer + "/api/auth/" + id)
             .pipe(
-                tap((user) => {
-                    this.user$.next(user);
+                tap((UserModel) => {
+                    this.user$.next(UserModel);
                 })
             )
             .subscribe();
@@ -32,7 +32,7 @@ export class UserService {
     }
 
     getAllUser() {
-        return this.http.get<[User]>(this.backendServer + "/api/auth");
+        return this.http.get<[UserModel]>(this.backendServer + "/api/auth");
     }
 
     deleteUser(id: string) {

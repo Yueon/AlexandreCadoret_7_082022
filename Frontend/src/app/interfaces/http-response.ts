@@ -3,7 +3,7 @@ export interface HttpResponse {
     ok: boolean;
     status: number;
     statusText: string;
-    url: string;
+    url: any;
   
     body?: any;
     type?: number;

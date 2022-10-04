@@ -8,14 +8,14 @@ import { environment } from 'src/environments/environment';
 
 import { HttpResponse } from '../interfaces/http-response';
 import { MessagesService } from './messages.service';
-import { User } from '../interfaces/user';
+import { UserModel } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  public user!: User;
-  private access_token = "";
+  public user!: UserModel;
+  private token = "";
   public userId = "";
   private userUrl = `${environment.backendServer}/api/auth`;
 
@@ -39,18 +39,18 @@ export class AuthService {
     return this.httpClient
         .post<{
             userId: string;
-            access_token: string;
-            token_type: string;
-            expires_in: string;
+            token: string;
+            expiresIn: string;
         }>(this.userUrl + "/login", {
             email: email,
             password: password,
         })
         .pipe(
-            tap(({ userId, access_token }) => {
+            tap(({ userId, token }) => {
                 this.userId = userId;
-                this.access_token = access_token;
+                this.token = token;
                 this.loggedIn = true;
+                console.log(this.token,"token");
             })
         );
   }
@@ -65,4 +65,9 @@ export class AuthService {
   getUserId() {
     return this.userId;
 }
+
+getToken() {
+  return this.token;
 }
+}
+//save le token et faire un header pour l'utiliser

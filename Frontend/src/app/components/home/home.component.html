@@ -1,6 +1,6 @@
 <main class="main-wrapper">
     <div class="profil-poster__image">
-        <img class="profil-img" *ngIf="user" src="../../../assets/default_profile.png" alt="" />
+        <img class="profil-img" *ngIf="user" src="{{ user.image }}" alt="" /> 
     </div>
     <div (click)="displayForm()" class="post-poster__texte">
         <p class="post-poster__message">Ajouter votre texte</p>

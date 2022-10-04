@@ -3,9 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
 
 import { HttpResponse } from '../../interfaces/http-response';
-import { User } from '../../interfaces/user'
+import { UserModel } from '../../interfaces/user'
+import { Observable, tap } from 'rxjs';
+
 
 @Component({
   selector: 'app-profil',
@@ -14,16 +17,30 @@ import { User } from '../../interfaces/user'
 })
 export class ProfilComponent implements OnInit {
 
-  User!: User;
+  User!: UserModel;
+  userId!: string;
+  url!: string;
+  user$!: Observable<UserModel>;
 
   constructor(
     private route: ActivatedRoute,
     public authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
+    public userService: UserService,
   ) { }
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
+    console.log("userId", this.userId);
+    this.userService.user$
+      .pipe(
+        tap((User) => {
+          this.User = User;
+          this.url = this.User.image;
+        })
+      )
+      .subscribe();
   }
 
 }

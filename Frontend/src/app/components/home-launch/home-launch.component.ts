@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/services/auth.service";
 import { tap } from "rxjs";
 import { UserService } from "src/app/services/user.service";
-import { User } from "src/app/interfaces/user";
+import { UserModel } from "src/app/interfaces/user";
 
 @Component({
     selector: "app-home-launch",
@@ -10,7 +10,7 @@ import { User } from "src/app/interfaces/user";
     styles: [],
 })
 export class HomeLaunchComponent implements OnInit {
-    user: User | undefined;
+    user: UserModel | undefined;
     constructor(private userService: UserService, private authService: AuthService) {}
 
     ngOnInit(): void {

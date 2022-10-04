@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 
 import { tap } from "rxjs";
 import { UserService } from "src/app/services/user.service";
-import { User } from "src/app/interfaces/user";
+import { UserModel } from "src/app/interfaces/user";
 import { PostComponent } from "src/app/components/post/post.component";
 
 @Component({
@@ -12,7 +12,7 @@ import { PostComponent } from "src/app/components/post/post.component";
     styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit {
-    user: User | undefined;
+    user!: UserModel;
     constructor(private userService: UserService, private dialog: MatDialog) {}
 
     ngOnInit(): void {
@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
             .pipe(
                 tap((user) => {
                     this.user = user;
+                    console.log("je suis un user", user.image)
                 })
             )
             .subscribe();

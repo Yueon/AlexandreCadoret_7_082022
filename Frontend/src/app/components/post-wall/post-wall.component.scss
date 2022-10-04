@@ -1,0 +1,87 @@
+@import "../../../variable.scss";
+
+.hidden {
+  display: none;
+}
+.publications {
+  &--list {
+    article {
+      background: $color-cards-background;
+      box-shadow: $shadow;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 2em auto;
+      max-width: 800px;
+      header {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1em;
+        img {
+          width: 80px;
+          margin-right: 20px;
+        }
+        .text {
+          flex-grow: 2;
+        }
+        .name {
+          font-weight: bold;
+          color: $color-primary;
+        }
+        .date {
+          font-style: italic;
+        }
+        .delete-post {
+          button {
+            padding: 0.5em 0.7em;
+            border: 1px solid $color-danger;
+            border-radius: 10px;
+            background: $color-primary-lighter;
+            cursor: pointer;
+            &:hover {
+              background: $color-primary-light;
+            }
+          }
+          .deleteButton {
+            font-size: 1.2em;
+            width: 20px;
+            color: $color-danger;
+          }
+        }
+      }
+      main {
+        img {
+          width: 100%;
+        }
+        .content {
+          padding: 1em 2em;
+        }
+      }
+    }
+    
+  }
+}
+.menu {
+  position: relative;
+  &--button {
+    border-radius: 50%;
+            padding: 5px;
+            border: none;
+            display: flex;
+            align-items: center;
+
+            mat-icon {
+                margin-left: 0;
+            }
+            &:hover {
+                border-radius: 50%;
+                background-color: #e5e5e5;
+            }
+  }
+}
+.button-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

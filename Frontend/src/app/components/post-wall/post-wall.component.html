@@ -1,1 +1,57 @@
-<p>post-wall works!</p>
+<div *ngIf="loading" class="spinner">
+  <span class="loader loader-quart"></span>
+</div>
+
+<ng-container *ngIf="content$ | async as content">
+  <p class="mt-30 p-15" *ngIf="!loading && content.length <= 0">Aucun contenu dans cette rubrique...</p>
+    <section class="publications--list">
+        <article *ngFor="let post of content">
+          <!-- Header Publication : photo de profil, nom, date, et delete -->
+          <header>
+            <div>
+              <a routerLink="/profil/{{post.posterId}}">
+                <img
+                  [src]="post.picture===null ? '../../../assets/default_profile.png' : post.picture"
+                  alt="Photo de profil de {{post.posterPseudo}}">
+              </a>
+            </div>
+            <div class="text">
+              <p class="name">
+                <a routerLink="/profil/{{post.posterId}}">{{post.posterPseudo}}</a>
+              </p>
+              <p class="date">
+                Publié le {{ post.date | date: "dd/MM/y à HH:mm" : "UTC+2"}}
+              </p>
+            </div>
+            <div *ngIf="userid === post.posterId || user?.moderateur === true" class="menu">
+              <button class="menu__button" [mat-menu-trigger-for]="menu" aria-label="button menu">
+                <mat-icon>menu</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+                <button class="button-option" mat-menu-item (click)="modifyPost(content)">
+                  <mat-icon>edit</mat-icon>
+                  <span>modifier</span>
+                </button>
+                <button class="" mat-menu-item (click)="deletePost()">
+                  <mat-icon>delete</mat-icon>
+                  <span>supprimer</span>
+                </button>
+              </mat-menu>
+            </div>
+          </header>
+          <hr>
+          <!-- Main Publication : Photo et/ou contenu -->
+          <main>
+            <div *ngIf="post.picture !== null" class="picture">
+              <img [src]="post.picture" alt="">
+            </div>
+            <div *ngIf="post.content !== null" class="content">
+              <p>{{post.content}}</p>
+            </div>
+          </main>
+          <!-- Footer Publication : likes et commentaires -->
+          <footer>
+          </footer>
+        </article>
+      </section>
+</ng-container>
