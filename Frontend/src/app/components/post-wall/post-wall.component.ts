@@ -29,8 +29,8 @@ export class PostWallComponent implements OnInit {
   like: boolean | undefined;
   user: UserModel | undefined;
   userid: string | undefined;
-
- // posts!: PostModel[];
+  postId!: number;
+  post!: PostModel;
 
   constructor(
     private publicationsService: PublicationsService,
@@ -39,8 +39,8 @@ export class PostWallComponent implements OnInit {
     public userService: UserService,
     private dialog: MatDialog,
     @Inject(DOCUMENT) private document: any,
-    private activitedRoute: ActivatedRoute,
-    private route: Router
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class PostWallComponent implements OnInit {
       .subscribe();
     
       this.userid = this.authService.getUserId();
-      this.route.routeReuseStrategy.shouldReuseRoute = function () {
+      this.router.routeReuseStrategy.shouldReuseRoute = function () {
         return false;
       };
       this.publicationsService
@@ -68,6 +68,11 @@ export class PostWallComponent implements OnInit {
         .subscribe((data) => {
           this.obsArrayContent.next(data);
         });
+}
+
+public onlike(event: Event): void {
+  const postId = this.postId;
+  console.log('postId', postId)
 }
 
   deletePost(): void {

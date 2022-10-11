@@ -120,6 +120,7 @@ module.exports.updateUser = async (req, res) => {
             {
                 $set: {
                     bio: req.body.bio,
+                    image: req.body.image,
                 },
             },
             { new: true, upsert: true, setDefaultsOnInsert: true },
@@ -131,7 +132,7 @@ module.exports.updateUser = async (req, res) => {
     }
 };
 
-module.exports.uploadProfil = async (req, res) => {
+/*module.exports.uploadProfil = async (req, res) => {
     try {
         if (
             req.file.detectedMimeType != "image/jpg" &&
@@ -167,7 +168,7 @@ module.exports.uploadProfil = async (req, res) => {
     } catch (err) {
         return res.status(500).send({ message: err });
     }
-};
+};*/
 
 
 module.exports.deleteUser = async (req, res) => {

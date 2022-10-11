@@ -1,8 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, tap } from "rxjs";
+import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { UserModel } from "src/app/interfaces/user";
 import { environment } from "src/environments/environment";
+import { HttpResponse } from "../interfaces/http-response";
+import { MessagesService } from "./messages.service";
 
 @Injectable({
     providedIn: "root",
@@ -10,7 +13,7 @@ import { environment } from "src/environments/environment";
 export class UserService {
     user$ = new BehaviorSubject<any>([]);
     private backendServer = environment.backendServer;
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, public messageService: MessagesService) {}
 
     getUserById(id: string) {
         this.http
@@ -23,13 +26,25 @@ export class UserService {
             .subscribe();
     }
 
-    updateUser(id: string, image: any, pseudo: string) {
+    /*updateUser(id: string, image: any) {
+        console.log('server', this.backendServer)
         const formData = new FormData();
-        const user = { pseudo: pseudo };
-        formData.append("user", JSON.stringify(user));
+        console.log('image', image)
         formData.append("image", image);
         return this.http.put<{ message: string }>(this.backendServer + "/api/auth/" + id, formData);
-    }
+    }*/
+
+   /* public updateImage(id: number, uploadData: FormData): Observable<HttpResponse> {
+        return this.http.post(`${this.backendServer}/upload`, uploadData, { withCredentials: true, observe: 'response' })
+          .pipe(catchError(err => {
+            this.log(`Erreur: ${err.statusText}`);
+            return of(err);
+          }));
+      }*/
+      private log(message: string): void {
+        this.messageService.add(message);
+      }
+
 
     getAllUser() {
         return this.http.get<[UserModel]>(this.backendServer + "/api/auth");
@@ -38,4 +53,12 @@ export class UserService {
     deleteUser(id: string) {
         return this.http.delete<{ message: string }>(this.backendServer + "/api/auth/" + id);
     }
+
+    public updateDescription(id: number, Bio: any): Observable<HttpResponse> {
+        return this.http.put(`${this.backendServer}/${id}`, {Bio}, { withCredentials: true, observe: 'response' })
+          .pipe(catchError(err => {
+            this.log(`Erreur: ${err.statusText}`);
+            return of(err);
+          }));
+      }
 }

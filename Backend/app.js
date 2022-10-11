@@ -44,6 +44,9 @@ app.use((req, res, next) => {
 // middleware intercepte la requete et la transforme au bon format     
 app.use(express.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+
 // Routes files
 const userRoutes = require("./routes/user.routes");
 const messagesRoutes = require('./routes/messages.routes');

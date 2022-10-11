@@ -50,7 +50,6 @@ export class AuthService {
                 this.userId = userId;
                 this.token = token;
                 this.loggedIn = true;
-                console.log(this.token,"token");
             })
         );
   }
@@ -70,4 +69,3 @@ getToken() {
   return this.token;
 }
 }
-//save le token et faire un header pour l'utiliser

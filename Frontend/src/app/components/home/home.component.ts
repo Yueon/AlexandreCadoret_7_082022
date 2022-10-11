@@ -20,7 +20,6 @@ export class HomeComponent implements OnInit {
             .pipe(
                 tap((user) => {
                     this.user = user;
-                    console.log("je suis un user", user.image)
                 })
             )
             .subscribe();

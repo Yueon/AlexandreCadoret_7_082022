@@ -42,16 +42,34 @@
           <hr>
           <!-- Main Publication : Photo et/ou contenu -->
           <main>
-            <div *ngIf="post.picture !== null" class="picture">
-              <img [src]="post.picture" alt="">
-            </div>
             <div *ngIf="post.content !== null" class="content">
               <p>{{post.content}}</p>
             </div>
+            <div *ngIf="post.picture !== null" class="picture">
+              <img [src]="post.picture" alt="">
+            </div>
           </main>
           <!-- Footer Publication : likes et commentaires -->
-          <footer>
-          </footer>
+          <!--<footer>
+              <div class="likes">
+                <form (submit)="onlike($event)">
+                  <input type="hidden" name="postId" [value]="post.postId">
+                  <input type="hidden" name="rate" [value]="post.likes.currentUserReaction === 1 ? 0 : 1">
+                  <button type="submit" [ngClass]="post.likes.currentUserReaction === 1 ? 'alreadyLiked' : ''" aria-label="like la publication">
+                    <i class="fas fa-thumbs-up"></i>
+                    {{post.likes.LikesNumber}}
+                  </button>
+                </form>
+                <form (submit)="onlike($event)">
+                  <input type="hidden" name="postId" [value]="post.postId">
+                  <input type="hidden" name="rate" [value]="post.likes.currentUserReaction === -1 ? 0 : -1">
+                  <button type="submit" [ngClass]="post.likes.currentUserReaction === -1 ? 'alreadyDisliked' : ''" aria-label="dislike la publication">
+                    <i class="fas fa-thumbs-down"></i>
+                    {{post.likes.DislikesNumber}}
+                  </button>
+                </form>
+              </div>
+          </footer> -->
         </article>
       </section>
 </ng-container>

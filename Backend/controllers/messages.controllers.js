@@ -1,12 +1,20 @@
+const { rawListeners } = require('../models/messages.models');
 const postModel = require('../models/messages.models');
 const userModel = require('../models/user.models');
 const objectId = require('mongoose').Types.ObjectId;
 
 module.exports.readPost = (req, res) => {
-    postModel.find((err, docs) => {
-        if (!err) res.send(docs);
-        else console.log('Error to get data : ' + err);
-    }).sort({ createdAt: -1 });
+    postModel.find()
+        .populate('user')
+        .sort({ createdAt: -1 })
+        .exec()
+        .then((data) => {
+            console.log(data)
+            res.status(201).json(data);
+        }).catch((err) => {
+            console.log(err)
+            return res.status(400).send(err);
+        })
 };
 
 module.exports.createPost = async (req, res) => {

@@ -42,10 +42,10 @@ export class PostComponent implements OnInit {
     const content = this.postForm.get("content")!.value;
     console.log('content', content);
     const picture = this.postForm.get("file")!.value;
-    console.log('picture', picture);
+    console.log('url', this.url);
     const formData = new FormData();
     if (picture !== null) {
-        formData.append('picture', picture);
+        formData.append('picture', this.url);
     }
     formData.append('content', content);
     

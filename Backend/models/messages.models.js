@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const postSchemas = new mongoose.Schema(
     {
-        posterId: { type: String, require: true },
+        posterId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+            required: true,
+        },
         posterPseudo: { type: String, require: true },
         content: { type: String, trim: true, maxlength: 500 },
         picture: { type: String },

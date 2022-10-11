@@ -24,6 +24,7 @@ router.get("/logout", userController.logout)
 router.get('/', auth, userController.getAllUsers);
 router.get('/:id', userController.userInfo);
 router.put("/:id", userController.updateUser);
+//router.post("/upload", upload.single("file"), userController.uploadProfil);
 router.delete("/:id", auth, userController.deleteUser);
 
 // on exporte router
