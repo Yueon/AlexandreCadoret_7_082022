@@ -50,11 +50,11 @@ deletePost(id: string) {
 getPublications(pageNumber: number, pageSize: number) {
   return this.HttpClient.get<PostModel[]>(this.postsUrl + "/" + pageNumber + pageSize)
 }
-public getOnePublication(id: number): Observable<HttpResponse> {
+/*public getOnePublication(id: number): Observable<HttpResponse> {
   return this.HttpClient.get(`${this.postsUrl}/${id}`, { withCredentials: true, observe: 'response' })
     .pipe(catchError(err => {
       this.log(`Erreur: ${err.statusText}`);
       return of(err);
     }));
-}
+}*/
 }

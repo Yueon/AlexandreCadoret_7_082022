@@ -5,9 +5,9 @@ const objectId = require('mongoose').Types.ObjectId;
 
 module.exports.readPost = (req, res) => {
     postModel.find()
-        .populate('user')
-        .sort({ createdAt: -1 })
-        .exec()
+        .sort({
+            createdAt: -1
+        }).populate("posterId")
         .then((data) => {
             console.log(data)
             res.status(201).json(data);
@@ -19,7 +19,7 @@ module.exports.readPost = (req, res) => {
 
 module.exports.createPost = async (req, res) => {
     const newPost = new postModel({
-        posterId: req.body.posterId,
+        posterId: objectId(req.body.posterId),
         posterPseudo: req.body.posterPseudo,
         posterAdmin: req.body.posterAdmin,
         content: req.body.content,
@@ -213,7 +213,7 @@ module.exports.editCommentPost = (req, res) => {
         return res.status(400).send('ID inconnu : ' + req.params.id);
 
     try {
-        return PostModel.findById(req.params.id, (err, docs) => {
+        return postModel.findById(req.params.id, (err, docs) => {
             const theComment = docs.comments.find((comment) =>
                 comment._id.equals(req.body.commentId)
             );
@@ -236,7 +236,7 @@ module.exports.deleteCommentPost = (req, res) => {
         return res.status(400).send('ID inconnu : ' + req.params.id);
 
     try {
-        return PostModel.findByIdAndUpdate(
+        return postModel.findByIdAndUpdate(
             req.params.id,
             {
                 $pull: {

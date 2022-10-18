@@ -10,14 +10,15 @@
           <header>
             <div>
               <a routerLink="/profil/{{post.posterId}}">
-                <img
-                  [src]="post.picture===null ? '../../../assets/default_profile.png' : post.picture"
-                  alt="Photo de profil de {{post.posterPseudo}}">
+                <img src="../../../assets/default_profile.png" alt="">
+                <!-- <img
+                  [src]="post.postId.image"
+                  alt="Photo de profil de {{post.postId.pseudo}}"> -->
               </a>
             </div>
             <div class="text">
               <p class="name">
-                <a routerLink="/profil/{{post.posterId}}">{{post.posterPseudo}}</a>
+               <!-- <a routerLink="/profil/{{post.posterId}}">{{post.postId.pseudo}}</a> -->
               </p>
               <p class="date">
                 Publié le {{ post.date | date: "dd/MM/y à HH:mm" : "UTC+2"}}

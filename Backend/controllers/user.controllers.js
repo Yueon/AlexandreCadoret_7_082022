@@ -5,9 +5,14 @@ var passwordSchema = require("../models/password.models");
 const ObjectID = require('mongoose').Types.ObjectId;
 // appel de bcrypt
 const bcrypt = require("bcrypt");
+const { uploadErrors } = require("../utils/errors.utils");
 //appel de jsonwebtoken
 const jwt = require('jsonwebtoken');
 const validator = require("validator");
+const multer = require('../middleware/multer-config')
+const fs = require('fs');
+const { promisify } = require('util');
+const pipeline = promisify(require('stream').pipeline);
 
 module.exports.signup = (req, res, next) => {
     const valideEmail = validator.isEmail(req.body.email);
@@ -120,7 +125,6 @@ module.exports.updateUser = async (req, res) => {
             {
                 $set: {
                     bio: req.body.bio,
-                    image: req.body.image,
                 },
             },
             { new: true, upsert: true, setDefaultsOnInsert: true },
@@ -132,43 +136,24 @@ module.exports.updateUser = async (req, res) => {
     }
 };
 
-/*module.exports.uploadProfil = async (req, res) => {
-    try {
-        if (
-            req.file.detectedMimeType != "image/jpg" &&
-            req.file.detectedMimeType != "image/png" &&
-            req.file.detectedMimeType != "image/jpeg"
-        )
-            throw Error("invalid file");
+module.exports.uploadProfil = async (req, res) => {
 
-        if (req.file.size > 500000) throw Error("max size");
-    } catch (err) {
-        const errors = uploadErrors(err);
-        return res.status(201).json({ errors });
-    }
-    const fileName = req.body.name + ".jpg";
-
-    await pipeline(
-        req.file.stream,
-        fs.createWriteStream(
-            `${__dirname}../images/${fileName}`
-        )
-    );
-
-    try {
-        await userModel.findByIdAndUpdate(
-            req.body.userId,
-            { $set: { image: "../images/" + fileName } },
-            { new: true, upsert: true, setDefaultsOnInsert: true },
-            (err, docs) => {
-                if (!err) return res.send(docs);
-                else return res.status(500).send({ message: err });
-            }
-        );
-    } catch (err) {
-        return res.status(500).send({ message: err });
-    }
-};*/
+    userModel.findOne({ _id: req.body.userId })
+        .then(userModel => {
+            const filename = req.file.filename;
+            const path = 'http://localhost:3000/images/';
+            const image = { image: path + filename };
+            userModel.updateOne(
+                { $set: image },
+                { new: true, upsert: true, setDefaultsOnInsert: true },
+                (err, docs) => {
+                    console.log(err, docs, "6")
+                    if (!err) res.send(docs);
+                    else console.log("Update error : " + err);
+                }
+            )
+        }).catch((error) => { console.log(error), res.status(400).send({ error: "vous ne pouvez pas modifié cette image" }) });
+};
 
 
 module.exports.deleteUser = async (req, res) => {

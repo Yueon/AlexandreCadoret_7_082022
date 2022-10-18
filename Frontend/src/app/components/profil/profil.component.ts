@@ -49,6 +49,13 @@ export class ProfilComponent implements OnInit {
     this.descriptionForm = this.formBuilder.group({
       bio: new FormControl(),
     });
+    this.initForm();
+  }
+  private initForm(): void {
+    this.passwordChangeForm = this.formBuilder.group({
+      oldPassword: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{8,}/)]],
+      newPassword: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{8,}/)]]
+    });
   }
   onselectFile(event: any) {
     this.selectedFile = event.target.files[0];
@@ -81,7 +88,7 @@ export class ProfilComponent implements OnInit {
         .subscribe();
   }*/
 
-  /*public saveProfil(): void {
+  public saveProfil(): void {
     let image: any;
     this.selectedFile ? (image = this.selectedFile) : (image = this.url);
     console.log('image', image)
@@ -98,13 +105,33 @@ export class ProfilComponent implements OnInit {
           this.messageService.add(`Une erreur s'est produite`);
         }
       });
-  }*/
+  }
 
   public onUpdatedescription() {
-    const Bio = this.descriptionForm?.get("bio")!.value;
+    const bio = this.descriptionForm?.get("bio")!.value;
+    console.log("bio:", bio);
     const formData = new FormData();
-    formData.append('bio', Bio);
+    formData.append('bio', bio);
       this.userService.updateDescription(this.userId, formData)
         .subscribe()
+    }
+
+    public onDeleteClicked(): void {
+      document.getElementById('delete-confirm')?.classList.toggle('profile-delete-confirm__hidden');
+    }
+
+    public onChangePassword(): void {
+      const { oldPassword, newPassword } = this.passwordChangeForm.value;
+      if (newPassword && newPassword !== '' && oldPassword && oldPassword !== '') {
+        /*this.userService.updatePassword(this.userId, oldPassword, newPassword)
+          .subscribe((response: HttpResponse) => {
+            if (response.status === 201) {
+              this.passwordChangeForm.reset();
+              this.messageService.add(`Votre mot de passe a bien été modifié`);
+            } else {
+              this.messageService.add(`Erreur: ${response.error.error}`);
+            }
+          });*/
+      }
     }
 }
