@@ -35,7 +35,7 @@ public newPublication(formData: FormData): Observable<HttpResponse> {
     }));
 }
 
-deletePublication(id: number): Observable<HttpResponse> {
+deletePublication(id: any): Observable<HttpResponse> {
   return this.HttpClient.delete(`${this.postsUrl}/${id}`, { withCredentials: true, observe: 'response' })
     .pipe(catchError(err => {
       this.log(`Erreur: ${err.statusText}`);

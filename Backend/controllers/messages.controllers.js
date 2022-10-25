@@ -82,7 +82,8 @@ module.exports.updatePost = (req, res, next) => {
 };
 
 module.exports.deletePost = (req, res, next) => {
-    postModel.findOne({ _id: req.params.id })
+    console.log('ok ok ok', req.params.id)
+    postModel.findOne({ _id: objectId(req.params.id) })
         .then(postModel => {
             if (!postModel) {
                 return res.status(401).json('erreur');

@@ -23,7 +23,7 @@
                 Publié le {{ post.createdAt | date: "dd/MM/y à HH:mm" : "UTC+2"}}
               </p>
             </div>
-            <div *ngIf="user?.userId === post.posterId || user?.moderateur === true" class="menu">
+            <div *ngIf="user?._id === post.posterId._id || user?.moderateur === true" class="menu">
               <button class="menu__button" [mat-menu-trigger-for]="menu" aria-label="button menu">
                 <mat-icon>menu</mat-icon>
               </button>

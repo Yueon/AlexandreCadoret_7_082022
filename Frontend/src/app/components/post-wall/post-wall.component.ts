@@ -79,16 +79,16 @@ public onlike(event: Event): void {
 
 
 public onDeletePublication(post: any, index: number): void {
-  console.log(post, "oui")
+  console.log(post._id, "oui")
   console.log("index", index)
-  this.publicationsService.deletePublication(post.postId).subscribe(() => {
+  this.publicationsService.deletePublication(post._id).subscribe(() => {
     this.content$
       .pipe(
         take(1),
         map((data: any) => {
           let newData = [];
           for (let content of data) {
-            content.postId !== post.postId ? newData.push(content) : null;
+            content.posterId._id !== post.posterId._id ? newData.push(content) : null;
           }
           return newData
         })
