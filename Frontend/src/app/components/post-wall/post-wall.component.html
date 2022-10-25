@@ -5,35 +5,34 @@
 <ng-container *ngIf="content$ | async as content">
   <p class="mt-30 p-15" *ngIf="!loading && content.length <= 0">Aucun contenu dans cette rubrique...</p>
     <section class="publications--list">
-        <article *ngFor="let post of content">
+        <article *ngFor="let post of content, let index = index" class="post__list">
           <!-- Header Publication : photo de profil, nom, date, et delete -->
           <header>
             <div>
-              <a routerLink="/profil/{{post.posterId}}">
-                <img src="../../../assets/default_profile.png" alt="">
-                <!-- <img
-                  [src]="post.postId.image"
-                  alt="Photo de profil de {{post.postId.pseudo}}"> -->
+              <a *ngIf ="post.posterId"  routerLink="/profil/{{post.posterId}}">
+                 <img
+                  [src]="post.posterId.image"
+                  alt="Photo de profil de {{post.posterId.pseudo}}">
               </a>
             </div>
             <div class="text">
               <p class="name">
-               <!-- <a routerLink="/profil/{{post.posterId}}">{{post.postId.pseudo}}</a> -->
+               <a routerLink="/profil/{{post.posterId}}">{{post.posterId.pseudo}}</a>
               </p>
               <p class="date">
-                Publié le {{ post.date | date: "dd/MM/y à HH:mm" : "UTC+2"}}
+                Publié le {{ post.createdAt | date: "dd/MM/y à HH:mm" : "UTC+2"}}
               </p>
             </div>
-            <div *ngIf="userid === post.posterId || user?.moderateur === true" class="menu">
+            <div *ngIf="user?.userId === post.posterId || user?.moderateur === true" class="menu">
               <button class="menu__button" [mat-menu-trigger-for]="menu" aria-label="button menu">
                 <mat-icon>menu</mat-icon>
               </button>
               <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
-                <button class="button-option" mat-menu-item (click)="modifyPost(content)">
+                <button class="button-option" mat-menu-item (click)="modifyPost(post)">
                   <mat-icon>edit</mat-icon>
                   <span>modifier</span>
                 </button>
-                <button class="" mat-menu-item (click)="deletePost()">
+                <button class="deletePost" mat-menu-item (click)="onDeletePublication(post, index)">
                   <mat-icon>delete</mat-icon>
                   <span>supprimer</span>
                 </button>
@@ -51,7 +50,7 @@
             </div>
           </main>
           <!-- Footer Publication : likes et commentaires -->
-          <!--<footer>
+          <footer>
               <div class="likes">
                 <form (submit)="onlike($event)">
                   <input type="hidden" name="postId" [value]="post.postId">
@@ -70,7 +69,7 @@
                   </button>
                 </form>
               </div>
-          </footer> -->
+          </footer>
         </article>
       </section>
 </ng-container>

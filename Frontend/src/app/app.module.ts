@@ -23,6 +23,7 @@ import { PostComponent } from './components/post/post.component';
 import { PostWallComponent } from './components/post-wall/post-wall.component';
 import { HomeLaunchComponent } from './components/home-launch/home-launch.component';
 import { AuthInterceptor } from 'src/interceptors/auth-interceptors';
+import { UpdatePostComponent } from './components/update-post/update-post.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AuthInterceptor } from 'src/interceptors/auth-interceptors';
     PostComponent,
     PostWallComponent,
     HomeLaunchComponent,
+    UpdatePostComponent,
   ],
   imports: [
     BrowserModule,

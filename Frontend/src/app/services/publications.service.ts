@@ -35,7 +35,7 @@ public newPublication(formData: FormData): Observable<HttpResponse> {
     }));
 }
 
-public deletePublication(id: number): Observable<HttpResponse> {
+deletePublication(id: number): Observable<HttpResponse> {
   return this.HttpClient.delete(`${this.postsUrl}/${id}`, { withCredentials: true, observe: 'response' })
     .pipe(catchError(err => {
       this.log(`Erreur: ${err.statusText}`);
@@ -43,18 +43,15 @@ public deletePublication(id: number): Observable<HttpResponse> {
     }));
 }
 
-deletePost(id: string) {
-  return this.HttpClient.delete<{ message: string }>(this.postsUrl + "/" + id);
-}
-
 getPublications(pageNumber: number, pageSize: number) {
   return this.HttpClient.get<PostModel[]>(this.postsUrl + "/" + pageNumber + pageSize)
 }
-/*public getOnePublication(id: number): Observable<HttpResponse> {
+
+getOnePublication(id: number): Observable<HttpResponse> {
   return this.HttpClient.get(`${this.postsUrl}/${id}`, { withCredentials: true, observe: 'response' })
     .pipe(catchError(err => {
       this.log(`Erreur: ${err.statusText}`);
       return of(err);
     }));
-}*/
+}
 }

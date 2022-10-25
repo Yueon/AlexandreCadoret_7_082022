@@ -35,3 +35,9 @@
   margin-left: 30px;
   padding: 5px;
 }
+
+@media all and (max-width: 900px) {
+  .main-wrapper {
+    max-width: 90%;
+  }
+}

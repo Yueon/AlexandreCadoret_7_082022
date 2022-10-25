@@ -12,6 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 import { PostModel } from 'src/app/interfaces/posts'; 
 import { UserModel } from "src/app/interfaces/user";
 import { HttpResponse } from 'src/app/interfaces/http-response';
+import { UpdatePostComponent } from "../update-post/update-post.component";
 
 @Component({
   selector: 'app-post-wall',
@@ -21,7 +22,6 @@ import { HttpResponse } from 'src/app/interfaces/http-response';
 export class PostWallComponent implements OnInit {
 
   loading!: boolean;
-  stillPost!: boolean;
   currentPage: any = '';
   pageSize: any = '';
   obsArrayContent: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
@@ -29,8 +29,9 @@ export class PostWallComponent implements OnInit {
   like: boolean | undefined;
   user: UserModel | undefined;
   userid: string | undefined;
-  postId!: number;
+  postId!: any;
   post!: PostModel;
+  posterId!: string;
 
   constructor(
     private publicationsService: PublicationsService,
@@ -40,7 +41,7 @@ export class PostWallComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(DOCUMENT) private document: any,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +56,7 @@ export class PostWallComponent implements OnInit {
       .subscribe();
     
       this.userid = this.authService.getUserId();
+      console.log('userid:', this.userid)
       this.router.routeReuseStrategy.shouldReuseRoute = function () {
         return false;
       };
@@ -75,10 +77,36 @@ public onlike(event: Event): void {
   console.log('postId', postId)
 }
 
-  deletePost(): void {
-   
+
+public onDeletePublication(post: any, index: number): void {
+  console.log(post, "oui")
+  console.log("index", index)
+  this.publicationsService.deletePublication(post.postId).subscribe(() => {
+    this.content$
+      .pipe(
+        take(1),
+        map((data: any) => {
+          let newData = [];
+          for (let content of data) {
+            content.postId !== post.postId ? newData.push(content) : null;
+          }
+          return newData
+        })
+      )
+      .subscribe((data) => {
+        this.obsArrayContent.next(data);
+    });
+  })
 }
 
-  modifyPost(post: any) {
+modifyPost(post: any) {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = false;
+  dialogConfig.autoFocus = true;
+  dialogConfig.width = "600px";
+  dialogConfig.maxWidth = "80%";
+  dialogConfig.data = post;
+
+  this.dialog.open(UpdatePostComponent, dialogConfig);
 }
 }

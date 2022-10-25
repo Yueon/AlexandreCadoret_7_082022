@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
-import { catchError, distinctUntilChanged, EMPTY, tap } from "rxjs";
+import { catchError, distinctUntilChanged, Observable, tap } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 
 import { PublicationsService } from 'src/app/services/publications.service';
 import { HttpResponse } from 'src/app/interfaces/http-response';
 import { MessagesService } from "../../services/messages.service";
+import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { UserModel } from '../../interfaces/user'
 
 @Component({
   selector: 'app-post',
@@ -18,6 +21,9 @@ export class PostComponent implements OnInit {
   postForm!: FormGroup;
   selectedFile: File | undefined;
   url: any = "";
+  User!: UserModel;
+  userId!: any;
+  user$!: Observable<UserModel>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,9 +31,19 @@ export class PostComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private messagesService: MessagesService,
+    public authService: AuthService,
+    public userService: UserService,
   ) { }
 
   ngOnInit(): void {
+    this.userId = this.authService.getUserId();
+    this.userService.user$
+      .pipe(
+        tap((User) => {
+          this.User = User;
+        })
+      )
+      .subscribe();
     this.postForm = this.formBuilder.group({
         content: [null, [Validators.required, Validators.maxLength(1000)]],
         file: [null, [Validators.required]],
@@ -42,12 +58,22 @@ export class PostComponent implements OnInit {
     const content = this.postForm.get("content")!.value;
     console.log('content', content);
     const picture = this.postForm.get("file")!.value;
+    console.log('picture', picture);
     console.log('url', this.url);
+    const posterId = this.userId;
+    console.log('posterId', this.userId);
+    const posterPseudo = this.User.pseudo;
+    console.log('poster', this.User);
+    console.log('posterPseudo', this.User.pseudo);
+    // faire appel au userId dans le ngOnInit et le recup la avec le pseudo
     const formData = new FormData();
+    console.log("formData", formData)
     if (picture !== null) {
         formData.append('picture', this.url);
     }
     formData.append('content', content);
+    formData.append('posterId', posterId);
+    formData.append('posterPseudo', posterPseudo);
     
     this.PublicationsService
         .newPublication(formData)

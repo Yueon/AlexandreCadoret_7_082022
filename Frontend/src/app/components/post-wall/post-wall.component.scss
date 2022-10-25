@@ -11,7 +11,7 @@
       border-radius: 10px;
       overflow: hidden;
       margin: 2em auto;
-      max-width: 800px;
+      width: 800px;
       header {
         display: flex;
         flex-flow: row nowrap;
@@ -55,8 +55,9 @@
       }
       main {
         img {
-          max-height: 300px; 
+          max-height: 450px; 
           border-radius: 5%;
+          max-width: 90%;
         }
         .content {
           padding: 1em 2em;
@@ -119,5 +120,12 @@ footer {
         font-size: 1.2em;
       }
     }
+  }
+}
+
+
+@media all and (max-width: 900px) {
+  article {
+    max-width: 90%;
   }
 }

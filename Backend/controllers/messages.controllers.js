@@ -9,13 +9,25 @@ module.exports.readPost = (req, res) => {
             createdAt: -1
         }).populate("posterId")
         .then((data) => {
-            console.log(data)
+            //console.log(data)
             res.status(201).json(data);
         }).catch((err) => {
             console.log(err)
             return res.status(400).send(err);
         })
 };
+
+module.exports.getOnePost = (req, res) => {
+    postModel.findOne({ _id: req.params.id })
+        .populate("posterId")
+        .then((data) => {
+            //console.log(data)
+            res.status(201).json(data);
+        }).catch((err) => {
+            console.log(err)
+            return res.status(400).send(err);
+        })
+}
 
 module.exports.createPost = async (req, res) => {
     const newPost = new postModel({
@@ -27,6 +39,7 @@ module.exports.createPost = async (req, res) => {
         likers: [],
         comments: [],
     });
+    console.log("req.body.posterId: ", req.body.posterId)
     try {
         const post = await newPost.save();
         return res.status(201).json(post);

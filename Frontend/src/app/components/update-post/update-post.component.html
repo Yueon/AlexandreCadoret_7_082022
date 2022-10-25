@@ -1,0 +1,44 @@
+<div class="">
+    <h2>Modifier la publication</h2>
+    <button aria-label="Annuler la création"><mat-icon (click)="closeTab()">cancel</mat-icon></button>
+</div>
+
+<form [formGroup]="modifyForm" id="form">
+    <div>
+        <label class="charLength-input" for="content">
+            <input
+                type="text"
+                class="form-control"
+                id="content"
+                placeholder="Titre"
+                formControlName="content"
+                maxlength="70"
+            />
+        </label>
+
+        <div class="image-wrapper">
+            <img
+                *ngIf="urlFile != ''"
+                class="image-wrapper__img w100 h100"
+                [src]="urlFile"
+                alt="photo du post"
+            />
+            <mat-icon *ngIf="urlFile != ''" class="image-wrapper__cross"
+                >highlight_off</mat-icon
+            >
+        </div>
+    </div>
+    <div>
+        <label *ngIf="urlFile === ''" for="file" class="label-file mb-10 fw-700 p-15" id="label"
+            >Ou choisir une image</label
+        >
+        <input
+            appClickStopPropagation
+            #fileinputModif
+            type="file"
+            class="d-none"
+            id="file"
+            formControlName="file"
+        />
+    </div>
+</form>

@@ -136,14 +136,13 @@ module.exports.updateUser = async (req, res) => {
     }
 };
 
-module.exports.uploadProfil = async (req, res) => {
+/*module.exports.uploadProfil = async (req, res) => {
 
-    userModel.findOne({ _id: req.body.userId })
+    userModel.findOneAndUpdate({ _id: req.body.userId })
         .then(userModel => {
             const filename = req.file.filename;
             const path = 'http://localhost:3000/images/';
             const image = { image: path + filename };
-            userModel.updateOne(
                 { $set: image },
                 { new: true, upsert: true, setDefaultsOnInsert: true },
                 (err, docs) => {
@@ -151,9 +150,21 @@ module.exports.uploadProfil = async (req, res) => {
                     if (!err) res.send(docs);
                     else console.log("Update error : " + err);
                 }
-            )
         }).catch((error) => { console.log(error), res.status(400).send({ error: "vous ne pouvez pas modifié cette image" }) });
-};
+};*/
+module.exports.uploadProfil = async (req, res) => {
+    const filename = req.file.filename;
+    const path = 'http://localhost:3000/images/';
+    const image = { image: path + filename };
+    userModel.findOneAndUpdate(
+        {
+            _id: req.body.userId,
+        }, {
+        $set: image
+    }, {
+        new: true, upsert: true, setDefaultsOnInsert: true
+    });
+}
 
 
 module.exports.deleteUser = async (req, res) => {

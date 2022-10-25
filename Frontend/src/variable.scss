@@ -5,6 +5,7 @@ $color-Tertiary: #4E5166;
 
 $color-text: #433a3a;
 $color-back-background: #eee;
+$color-back-background-light: lighten($color-back-background, 20%);
 $color-cards-background: #fff;
 
 $color-primary-light: lighten($color-primary, 45%);
