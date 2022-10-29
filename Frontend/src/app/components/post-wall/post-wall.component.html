@@ -24,10 +24,10 @@
               </p>
             </div>
             <div *ngIf="user?._id === post.posterId._id || user?.moderateur === true" class="menu">
-              <button class="menu__button" [mat-menu-trigger-for]="menu" aria-label="button menu">
+              <button class="menu__button" [matMenuTriggerFor]="menu" aria-label="button menu">
                 <mat-icon>menu</mat-icon>
               </button>
-              <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+              <mat-menu #menu="matMenu">
                 <button class="button-option" mat-menu-item (click)="modifyPost(post)">
                   <mat-icon>edit</mat-icon>
                   <span>modifier</span>

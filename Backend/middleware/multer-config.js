@@ -1,5 +1,8 @@
 // on importe multer
 const multer = require("multer");
+
+const limits = { fieldSize: 25 * 1024 * 1024 }
+
 // on définit les images/formats ( comme un dictionnaire)
 const MIME_TYPES = {
     "image/jpg": "jpg",
@@ -30,4 +33,4 @@ const storage = multer.diskStorage({
         callback(null, name + Date.now() + "." + extension);
     }
 });
-module.exports = multer({ storage }).single("image");
+module.exports = multer({ storage, limits: { fieldSize: 25 * 1024 * 1024 } }).single("image");

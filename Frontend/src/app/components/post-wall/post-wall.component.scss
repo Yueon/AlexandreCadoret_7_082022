@@ -123,6 +123,53 @@ footer {
   }
 }
 
+::ng-deep.cdk-overlay-container {
+z-index: 1000;
+}
+
+::ng-deep.cdk-global-overlay-wrapper{
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+::ng-deep.cdk-overlay-transparent-backdrop.cdk-overlay-backdrop-showing{
+  opacity: 0;
+  visibility: visible;
+}
+
+::ng-deep.cdk-overlay-transparent-backdrop{
+  transition: visibility 1ms linear,opacity 1ms linear;
+}
+ /*::ng-deep.cdk-overlay-backdrop{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  pointer-events: auto;
+ }*/
+
+ ::ng-deep.cdk-overlay-connected-position-bounding-box{
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+::ng-deep.cdk-overlay-pane{
+  position: static;
+  pointer-events: auto;
+  box-sizing: border-box;
+  z-index: 1000;
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
+}
 
 @media all and (max-width: 900px) {
   article {

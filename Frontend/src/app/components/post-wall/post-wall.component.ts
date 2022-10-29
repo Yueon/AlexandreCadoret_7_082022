@@ -95,6 +95,9 @@ public onDeletePublication(post: any, index: number): void {
       )
       .subscribe((data) => {
         this.obsArrayContent.next(data);
+        this.router.navigateByUrl("", { skipLocationChange: true}).then(() => {
+          this.router.navigate(["/home"]);
+        })
     });
   })
 }

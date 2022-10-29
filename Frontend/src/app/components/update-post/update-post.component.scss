@@ -1,0 +1,137 @@
+@import "../../../variable.scss";
+
+.updatePost {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.updateContent {
+    position: relative;
+}
+.form-control {
+    width: 100%;
+    height: 7em;
+    margin: 1em 0;
+    padding: 1em;
+    resize: none;
+}
+.updatePicture {
+    position: relative;
+    &__img {
+        max-height: 400px;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    &__cross {
+        position: absolute;
+        cursor: pointer;
+        top: 20px;
+        right: 20px;
+        width: 30px;
+        height: 30px;
+    }
+}
+.d-none {
+    display: none;
+}
+
+::ng-deep.cdk-global-overlay-wrapper {
+    position: fixed;
+    top: 0%;
+    width: 100%;
+    height: 2000px;
+    padding-top: 15%;
+    background: rgba(176, 176, 176, 0.75);
+    margin-top: -35%;
+  }
+  ::ng-deep.mat-dialog-container {
+    background-color: $color-cards-background;
+    display: flex;
+    box-shadow: 0 0 13px rgb(49, 49, 49);
+  }
+  ::ng-deep.mat-dialog-container div {
+    width: 100%;
+  }
+  ::ng-deep.mat-dialog-container app-update-post {
+    width: 100%;
+  }
+  ::ng-deep.updateBtn {
+    display: flex;
+    justify-content: center;
+  }
+  ::ng-deep.mat-dialog-container select {
+    background-color: $color-back-background;
+    color: $color-text;
+  }
+  
+  ::ng-deep.mat-dialog-container textarea {
+    background-color: $color-back-background;
+    color: $color-Tertiary;
+    padding: 1em;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.4;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 2%;
+    transition: all 0.2s;
+    &:hover {
+      cursor: pointer;
+      background-color: $color-back-background-light;
+    }
+    &:focus {
+      cursor: text;
+      color: $color-text;
+      background-color: $color-cards-background;
+      border-color: $color-text;
+    }
+  }
+  ::ng-deep.btn {
+    cursor: pointer;
+    display: block;
+    margin: auto;
+    padding: 0.7em 1.5em;
+    background: white;
+    border: 1px solid #FD2D01;
+    border-radius: 5px;
+    width: 25%;
+    color: $color-text;
+    font-weight: bold;
+    &:hover {
+      background: #ffe9e5;
+    }
+  }
+  
+  ::ng-deep.label-file {
+    display: flex;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.7em 1.5em;
+  background: white;
+  border: 1px solid #FD2D01;
+  border-radius: 5px;
+  width: 50%;
+  margin-bottom: 5px;
+  color: $color-text;
+font-weight: bold;
+  &:hover {
+    background: #ffe9e5;
+  }
+  }
+  
+  ::ng-deep.mat-dialog-container textarea::placeholder {
+    color: $color-text;
+  }
+  
+  ::ng-deep.mat-dialog-container input::placeholder {
+    background-color: $color-back-background;
+    color: $color-text;
+  }
+
+  ::ng-deep.mat-dialog-container app-post {
+    width: 100%;
+  }

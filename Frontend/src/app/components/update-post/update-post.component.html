@@ -1,36 +1,36 @@
-<div class="">
+<div class="updatePost">
     <h2>Modifier la publication</h2>
     <button aria-label="Annuler la création"><mat-icon (click)="closeTab()">cancel</mat-icon></button>
 </div>
 
 <form [formGroup]="modifyForm" id="form">
     <div>
-        <label class="charLength-input" for="content">
-            <input
+        <label class="updateContent" for="content">
+            <textarea
                 type="text"
                 class="form-control"
                 id="content"
-                placeholder="Titre"
+                placeholder="Message"
                 formControlName="content"
-                maxlength="70"
-            />
+                maxlength="70">
+            </textarea>
         </label>
 
-        <div class="image-wrapper">
+        <div class="updatePicture">
             <img
                 *ngIf="urlFile != ''"
-                class="image-wrapper__img w100 h100"
+                class="updatePicture__img"
                 [src]="urlFile"
                 alt="photo du post"
             />
-            <mat-icon *ngIf="urlFile != ''" class="image-wrapper__cross"
-                >highlight_off</mat-icon
+            <mat-icon *ngIf="urlFile != ''" (click)="removeFile(0)" class="updatePicture__cross"
+                >cancel</mat-icon
             >
         </div>
     </div>
-    <div>
-        <label *ngIf="urlFile === ''" for="file" class="label-file mb-10 fw-700 p-15" id="label"
-            >Ou choisir une image</label
+    <div class="updateBtn">
+        <label *ngIf="urlFile === ''" for="file" class="label-file" id="label"
+            >choisir une image</label
         >
         <input
             appClickStopPropagation
@@ -39,6 +39,10 @@
             class="d-none"
             id="file"
             formControlName="file"
+            (change)="addFile($event)"
         />
     </div>
+    <button [disabled]="modifyForm.invalid" (click)="modifyPost()" class="btn" type="submit">
+        Modifier
+    </button>
 </form>

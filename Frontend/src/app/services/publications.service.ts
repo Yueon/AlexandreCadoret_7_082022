@@ -43,6 +43,14 @@ deletePublication(id: any): Observable<HttpResponse> {
     }));
 }
 
+updatePublication(id: any, formData: FormData): Observable<HttpResponse> {
+  return this.HttpClient.put(`${this.postsUrl}/${id}`, formData, { withCredentials: true, observe: 'response' })
+    .pipe(catchError(err => {
+      this.log(`Erreur: ${err.statusText}`);
+      return of(err);
+    }));
+}
+
 getPublications(pageNumber: number, pageSize: number) {
   return this.HttpClient.get<PostModel[]>(this.postsUrl + "/" + pageNumber + pageSize)
 }

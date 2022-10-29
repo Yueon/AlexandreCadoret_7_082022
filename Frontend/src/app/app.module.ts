@@ -25,6 +25,8 @@ import { HomeLaunchComponent } from './components/home-launch/home-launch.compon
 import { AuthInterceptor } from 'src/interceptors/auth-interceptors';
 import { UpdatePostComponent } from './components/update-post/update-post.component';
 
+import { CommonModule} from "@angular/common";
+import { RouterModule } from "@angular/router";
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,12 +44,14 @@ import { UpdatePostComponent } from './components/update-post/update-post.compon
   imports: [
     BrowserModule,
     FormsModule,
+    CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     ImageCropperModule,
     NoopAnimationsModule,
     MatIconModule,
+    RouterModule,
     MatMenuModule,
     MatDialogModule,
   ],
