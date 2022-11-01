@@ -65,7 +65,8 @@ export class UserService {
         }));
     }
 
-    public updateDescription(id: number, bio: any): Observable<HttpResponse> {
+    public updateDescription(id: number, bio: String): Observable<HttpResponse> {
+      console.log("ok", bio)
         return this.http.put(`${this.backendServer}/api/auth/${id}`, {bio}, { withCredentials: true, observe: 'response' })
           .pipe(catchError(err => {
             this.log(`Erreur: ${err.statusText}`);

@@ -51,24 +51,16 @@
           </main>
           <!-- Footer Publication : likes et commentaires -->
           <footer>
-              <div class="likes">
-                <form (submit)="onlike($event)">
-                  <input type="hidden" name="postId" [value]="post.postId">
-                  <input type="hidden" name="rate" [value]="post.likes.currentUserReaction === 1 ? 0 : 1">
-                  <button type="submit" [ngClass]="post.likes.currentUserReaction === 1 ? 'alreadyLiked' : ''" aria-label="like la publication">
-                    <i class="fas fa-thumbs-up"></i>
-                    {{post.likes.LikesNumber}}
-                  </button>
-                </form>
-                <form (submit)="onlike($event)">
-                  <input type="hidden" name="postId" [value]="post.postId">
-                  <input type="hidden" name="rate" [value]="post.likes.currentUserReaction === -1 ? 0 : -1">
-                  <button type="submit" [ngClass]="post.likes.currentUserReaction === -1 ? 'alreadyDisliked' : ''" aria-label="dislike la publication">
-                    <i class="fas fa-thumbs-down"></i>
-                    {{post.likes.DislikesNumber}}
-                  </button>
-                </form>
+            <div class="like-buttons">
+              <div class="likes" id="like" (click)="onLike(post, index)">
+                <i [ngClass]="{ 'fas liked': like, 'far': !like, 'disabled': dislike }" class="like fa-thumbs-up fa-lg"></i>
+                <span>{{ post.likes }}</span>
               </div>
+              <div class="likes" id="dislike" (click)="onDislike(post, index)">
+                <i [ngClass]="{ 'fas disliked': dislike, 'far': !dislike, 'disabled': like }" class="dislike fa-thumbs-down fa-lg"></i>
+                <span>{{ post.dislikes }}</span>
+              </div>
+            </div>
           </footer>
         </article>
       </section>

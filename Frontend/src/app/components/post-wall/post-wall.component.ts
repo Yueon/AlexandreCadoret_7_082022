@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { BehaviorSubject, forkJoin, fromEvent, map, Observable, take, tap } from "rxjs";
+import { BehaviorSubject, catchError, EMPTY, of, map, Observable, take, tap, switchMap } from "rxjs";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -26,12 +26,13 @@ export class PostWallComponent implements OnInit {
   pageSize: any = '';
   obsArrayContent: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   content$: Observable<any> = this.obsArrayContent.asObservable();
-  like: boolean | undefined;
   user: UserModel | undefined;
   userid: string | undefined;
   postId!: any;
   post!: PostModel;
   posterId!: string;
+  like!: boolean;
+  dislike!: boolean;
 
   constructor(
     private publicationsService: PublicationsService,
@@ -70,13 +71,86 @@ export class PostWallComponent implements OnInit {
         .subscribe((data) => {
           this.obsArrayContent.next(data);
         });
+
 }
 
-public onlike(event: Event): void {
-  const postId = this.postId;
-  console.log('postId', postId)
+onLike(post: any, index: number) {
+  if (post.isDislike == 1) {
+    return;
+  }
+  if (post.isLiked == 1) {
+      this.like = false;
+      this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
+          this.content$
+              .pipe(
+                  take(1),
+                  map((data) => {
+                      data[index].likes--;
+                      data[index].isLiked = 0;
+                      return data;
+                  })
+              )
+              .subscribe((newArr) => {
+                  this.obsArrayContent.next(newArr);
+              });
+      });
+  } else {
+      this.like = true;
+      this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
+          this.content$
+              .pipe(
+                  take(1),
+                  map((data) => {
+                      data[index].likes++;
+                      data[index].isLiked = 1;
+                      return data;
+                  })
+              )
+              .subscribe((newArr) => {
+                  this.obsArrayContent.next(newArr);
+              });
+      });
+  }
 }
 
+onDislike(post: any, index: number) {
+  if (post.isLike == 1) {
+    return;
+  }
+  if (post.isDisliked == 1) {
+      this.dislike = false;
+      this.publicationsService.likePost(post._id, this.dislike).subscribe((data) => {
+          this.content$
+              .pipe(
+                  take(1),
+                  map((data) => {
+                      data[index].dislikes--;
+                      data[index].isDisliked = 0;
+                      return data;
+                  })
+              )
+              .subscribe((newArr) => {
+                  this.obsArrayContent.next(newArr);
+              });
+      });
+  } else {
+      this.dislike = true;
+      this.publicationsService.likePost(post._id, this.dislike).subscribe((data) => {
+          this.content$
+              .pipe(
+                  take(1),
+                  map((data) => {
+                      data[index].dislikes++;
+                      data[index].isDisliked = 1;
+                      return data;
+                  })
+              )
+              .subscribe((newArr) => {
+                  this.obsArrayContent.next(newArr);
+              });
+      });
+  }
+}
 
 public onDeletePublication(post: any, index: number): void {
   console.log(post._id, "oui")

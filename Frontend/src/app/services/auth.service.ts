@@ -68,4 +68,11 @@ export class AuthService {
 getToken() {
   return this.token;
 }
+
+logout() {
+  this.token = '';
+  this.userId = '';
+  this.loggedIn = false;
+  this.router.navigate(['login']);
+}
 }

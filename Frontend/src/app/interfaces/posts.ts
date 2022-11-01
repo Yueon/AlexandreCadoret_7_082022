@@ -7,12 +7,6 @@ interface Comment {
     posterPicture: string;
   }
   
-  interface Likes {
-    usersLiked: number;
-    usersDisliked: number;
-    currentUserReaction: number;
-  }
-  
   
   export interface PostModel {
       postId: number;
@@ -20,10 +14,12 @@ interface Comment {
       posterPseudo: String,
       content: String,
       picture: String,
-      likes: Number,
-      dislikes: Number,
-      usersLiked: String,
-      usersDisliked: String,
+      likes: number,
+      dislikes: number,
+      usersLiked: String[],
+      usersDisliked: String[],
+      isLiked?: Number;
+      isDislike?: Number;
       date: string,
       comments: {
           type: [

@@ -1,11 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { catchError, Observable, of } from "rxjs";
+import { catchError, mapTo, Observable, of, throwError } from "rxjs";
 import { PostModel } from "src/app/interfaces/posts";
 import { environment } from "src/environments/environment";
 import { HttpResponse } from "../interfaces/http-response";
 import { MessagesService } from "./messages.service";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class PublicationsService {
     private HttpClient: HttpClient,
     private router: Router,
     private messagesService: MessagesService,
+    private auth: AuthService,
   ) { }
 
 
@@ -61,5 +63,15 @@ getOnePublication(id: number): Observable<HttpResponse> {
       this.log(`Erreur: ${err.statusText}`);
       return of(err);
     }));
+}
+
+likePost(id: string, like: boolean) {
+  return this.HttpClient.post<{ message: string }>(
+    'http://localhost:3000/api/post/' + id + '/like',
+    { userId: this.auth.getUserId(), like: like ? 1 : 0 }
+  ).pipe(
+    mapTo(like),
+    catchError(error => throwError(error.error.message))
+  );
 }
 }

@@ -116,10 +116,13 @@ module.exports.userInfo = (req, res) => {
 };
 
 module.exports.updateUser = async (req, res) => {
+    console.log("ok", req.params)
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID inconnu : ' + req.params.id)
+    console.log("ok")
 
     try {
+        console.log("ok", req.body)
         await userModel.findOneAndUpdate(
             { _id: req.params.id },
             {
@@ -129,6 +132,7 @@ module.exports.updateUser = async (req, res) => {
             },
             { new: true, upsert: true, setDefaultsOnInsert: true },
         )
+        console.log("ok")
             .then((docs) => res.send(docs))
             .catch((err) => res.status(500).send({ message: err }));
     } catch (err) {
@@ -136,22 +140,6 @@ module.exports.updateUser = async (req, res) => {
     }
 };
 
-/*module.exports.uploadProfil = async (req, res) => {
-
-    userModel.findOneAndUpdate({ _id: req.body.userId })
-        .then(userModel => {
-            const filename = req.file.filename;
-            const path = 'http://localhost:3000/images/';
-            const image = { image: path + filename };
-                { $set: image },
-                { new: true, upsert: true, setDefaultsOnInsert: true },
-                (err, docs) => {
-                    console.log(err, docs, "6")
-                    if (!err) res.send(docs);
-                    else console.log("Update error : " + err);
-                }
-        }).catch((error) => { console.log(error), res.status(400).send({ error: "vous ne pouvez pas modifié cette image" }) });
-};*/
 module.exports.uploadProfil = async (req, res) => {
     const filename = req.file.filename;
     const path = 'http://localhost:3000/images/';

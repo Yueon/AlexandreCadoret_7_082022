@@ -112,7 +112,8 @@ export class ProfilComponent implements OnInit {
     console.log("bio:", bio);
     const formData = new FormData();
     formData.append('bio', bio);
-      this.userService.updateDescription(this.userId, formData)
+    console.log("bio:", formData);
+      this.userService.updateDescription(this.userId, bio)
         .subscribe()
     }
 
