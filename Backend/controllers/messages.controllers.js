@@ -117,6 +117,7 @@ module.exports.like = (req, res, next) => {
         //retourne une promesse avec reponse status 200 OK et l'élément en json
         .then((post) => {
             console.log('post', post)
+            console.log('userId', req.body.userId)
             // définition de variables
             let valeurVote;
             let votant = req.body.userId;
@@ -182,7 +183,7 @@ module.exports.like = (req, res, next) => {
                     dislikes: post.dislikes,
                     usersLiked: post.usersLiked,
                     usersDisliked: post.usersDisliked,
-                }
+                },
             )
                 // retourne une promesse avec status 200 et message en json
                 .then(() => res.status(200).json({ message: "Vous venez de voter" }))

@@ -38,8 +38,7 @@ errorMsg!: string;
 
   public onSubmit(): void {
     const { email, password } = this.signInForm.value;
-    this.authService
-    .loginUser(email, password)
+    this.authService.loginUser(email, password)
     .pipe(
       tap(() => {
         const id = this.authService.getUserId();
@@ -52,6 +51,10 @@ errorMsg!: string;
         return EMPTY;
       })
     )
-    .subscribe();
+    .subscribe(res => {
+      console.log(res)
+      localStorage.setItem('token', res.token)
+      localStorage.setItem('userId', res.userId)
+    });
   }
 }

@@ -18,8 +18,6 @@ interface Comment {
       dislikes: number,
       usersLiked: String[],
       usersDisliked: String[],
-      isLiked?: Number;
-      isDislike?: Number;
       date: string,
       comments: {
           type: [

@@ -53,11 +53,11 @@
           <footer>
             <div class="like-buttons">
               <div class="likes" id="like" (click)="onLike(post, index)">
-                <i [ngClass]="{ 'fas liked': like, 'far': !like, 'disabled': dislike }" class="like fa-thumbs-up fa-lg"></i>
+                <i [ngClass]="{ 'fas liked': liked, 'far': !liked, 'disabled': disliked }" class="like fa-thumbs-up fa-lg"></i>
                 <span>{{ post.likes }}</span>
               </div>
               <div class="likes" id="dislike" (click)="onDislike(post, index)">
-                <i [ngClass]="{ 'fas disliked': dislike, 'far': !dislike, 'disabled': like }" class="dislike fa-thumbs-down fa-lg"></i>
+                <i [ngClass]="{ 'fas disliked': disliked, 'far': !disliked, 'disabled': liked }" class="dislike fa-thumbs-down fa-lg"></i>
                 <span>{{ post.dislikes }}</span>
               </div>
             </div>

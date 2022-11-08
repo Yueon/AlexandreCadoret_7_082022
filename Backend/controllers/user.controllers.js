@@ -115,45 +115,16 @@ module.exports.userInfo = (req, res) => {
     }).select('-password');
 };
 
-module.exports.updateUser = async (req, res) => {
-    console.log("ok", req.params)
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send('ID inconnu : ' + req.params.id)
-    console.log("ok")
 
-    try {
-        console.log("ok", req.body)
-        await userModel.findOneAndUpdate(
-            { _id: req.params.id },
-            {
-                $set: {
-                    bio: req.body.bio,
-                },
-            },
-            { new: true, upsert: true, setDefaultsOnInsert: true },
-        )
-        console.log("ok")
-            .then((docs) => res.send(docs))
-            .catch((err) => res.status(500).send({ message: err }));
-    } catch (err) {
-        return res.status(500).json({ message: err });
-    }
-};
-
-module.exports.uploadProfil = async (req, res) => {
-    const filename = req.file.filename;
-    const path = 'http://localhost:3000/images/';
-    const image = { image: path + filename };
-    userModel.findOneAndUpdate(
+exports.updateUser = (req, res, next) => {
+    const imageObject = req.file ?
         {
-            _id: req.body.userId,
-        }, {
-        $set: image
-    }, {
-        new: true, upsert: true, setDefaultsOnInsert: true
-    });
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { ...req.body };
+    userModel.updateOne({ _id: req.params.id }, { ...imageObject, _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Modified!' }))
+        .catch(error => res.status(400).json({ error }));
 }
-
 
 module.exports.deleteUser = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))

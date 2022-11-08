@@ -39,7 +39,12 @@ signInForm!: FormGroup;
     this.authService.createUser(pseudo, email, password)
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {
-          this.authService.loginUser(email, password);
+          this.authService.loginUser(email, password)
+          .subscribe(res => {
+            console.log(res)
+            localStorage.setItem('token', res.token)
+            localStorage.setItem('userId', res.userId)
+          });
         } else {
           this.messagesService.add(`Erreur: ${response.error.error}`);
         }

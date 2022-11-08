@@ -66,38 +66,20 @@ export class ProfilComponent implements OnInit {
     };
   }
 
-  /*saveProfil() {
-    let image;
-    this.selectedFile ? (image = this.selectedFile) : (image = this.url);
-    console.log("image", image);
-    this.userService
-        .updateUser(this.userId, image)
-        .pipe(
-            tap(() => {
-                this.userService.getUserById(this.userId);
-
-                this.router.navigateByUrl("", { skipLocationChange: true }).then(() => {
-                    this.router.navigate(["/home"]);
-                });
-            }),
-            catchError((error) => {
-                this.errorMsg = error.error.message;
-                return EMPTY;
-            })
-        )
-        .subscribe();
-  }*/
-
   public saveProfil(): void {
     let image: any;
     this.selectedFile ? (image = this.selectedFile) : (image = this.url);
-    console.log('image', image)
-    console.log('ID', this.userId)
     const uploadData = new FormData();
-    console.log('data',uploadData)
     uploadData.append('image', image);
-    console.log('data',uploadData)
+    uploadData.append('user', this.userId);
     this.userService.updateImage(this.userId, uploadData)
+      .pipe(
+        tap(() => {
+          this.router.navigateByUrl("", { skipLocationChange: true }).then(() => {
+            this.router.navigate(["/home"]);
+          });
+        })
+      )
       .subscribe((response: HttpResponse) => {
         if (response.status === 201) {
           this.User;
@@ -114,6 +96,13 @@ export class ProfilComponent implements OnInit {
     formData.append('bio', bio);
     console.log("bio:", formData);
       this.userService.updateDescription(this.userId, bio)
+      .pipe(
+        tap(() => {
+          this.router.navigateByUrl("", { skipLocationChange: true }).then(() => {
+            this.router.navigate(["/home"]);
+          });
+        })
+      )
         .subscribe()
     }
 

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, } from 'rxjs/operators';
+import { BehaviorSubject, tap } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
@@ -18,11 +19,13 @@ export class AuthService {
   private token = "";
   public userId = "";
   private userUrl = `${environment.backendServer}/api/auth`;
+  isAuth$ = new BehaviorSubject<boolean>(false);
 
   loggedIn:boolean = false;
 
   IsAuthenticated(){
-    return this.loggedIn;
+    return !!localStorage.getItem('token')
+   // return this.loggedIn;
   }
 
   constructor(
@@ -49,7 +52,8 @@ export class AuthService {
             tap(({ userId, token }) => {
                 this.userId = userId;
                 this.token = token;
-                this.loggedIn = true;
+                //this.loggedIn = true;
+                //this.isAuth$.next(true);
             })
         );
   }
@@ -61,18 +65,20 @@ export class AuthService {
     }));
   }
 
-  getUserId() {
-    return this.userId;
+getUserId() {
+  return localStorage.getItem('userId');
 }
 
 getToken() {
-  return this.token;
+  return localStorage.getItem('token');
 }
 
 logout() {
+  localStorage.removeItem('token')
   this.token = '';
   this.userId = '';
-  this.loggedIn = false;
+  //this.loggedIn = false;
+  //this.isAuth$.next(false);
   this.router.navigate(['login']);
 }
 }

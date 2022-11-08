@@ -2,6 +2,7 @@
 const express = require('express');
 // constante app qui sera notre application; ça permet de créer une application express
 const app = express();
+const morgan = require('morgan');
 // appel de helmet, utilisé pour sécuriser les en-têtes http.
 const helmet = require("helmet");
 // on importe path qui donne accès au chemin du système de fichiers
@@ -17,6 +18,12 @@ require("./config/mgdb");
 // middleware d'helmet
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 //
+
+
+const morganBody = require("morgan-body");
+//morganBody(app);
+//app.use(morgan("combined"));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //----------------------------------------------------------------------------------
@@ -45,8 +52,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
-
 // Routes files
 const userRoutes = require("./routes/user.routes");
 const messagesRoutes = require('./routes/messages.routes');

@@ -211,7 +211,6 @@ z-index: 1000;
 }
 
 .dislike {
-  transform: scaleX(-1) translateY(5px);
   &:hover {
     color: rgba(219, 51, 0, 1);
   }

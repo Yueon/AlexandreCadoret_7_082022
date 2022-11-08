@@ -53,8 +53,8 @@ updatePublication(id: any, formData: FormData): Observable<HttpResponse> {
     }));
 }
 
-getPublications(pageNumber: number, pageSize: number) {
-  return this.HttpClient.get<PostModel[]>(this.postsUrl + "/" + pageNumber + pageSize)
+getPublications() {
+  return this.HttpClient.get<PostModel[]>(this.postsUrl + "/")
 }
 
 getOnePublication(id: number): Observable<HttpResponse> {
@@ -65,10 +65,10 @@ getOnePublication(id: number): Observable<HttpResponse> {
     }));
 }
 
-likePost(id: string, like: boolean) {
+likePost(id: string, like: number) {
   return this.HttpClient.post<{ message: string }>(
     'http://localhost:3000/api/post/' + id + '/like',
-    { userId: this.auth.getUserId(), like: like ? 1 : 0 }
+    { userId: this.auth.getUserId(), like: like}
   ).pipe(
     mapTo(like),
     catchError(error => throwError(error.error.message))
