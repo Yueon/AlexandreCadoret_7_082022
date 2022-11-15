@@ -27,10 +27,10 @@
     &__cross {
         position: absolute;
         cursor: pointer;
-        top: 20px;
-        right: 20px;
-        width: 30px;
-        height: 30px;
+        top: 10px;
+        right: 10px;
+        width: 20px;
+        color: black;
     }
 }
 .d-none {
@@ -60,6 +60,7 @@
   ::ng-deep.updateBtn {
     display: flex;
     justify-content: center;
+    margin-top: 1%;
   }
   ::ng-deep.mat-dialog-container select {
     background-color: $color-back-background;
@@ -90,7 +91,7 @@
       border-color: $color-text;
     }
   }
-  ::ng-deep.btn {
+  ::ng-deep.modifybtn {
     cursor: pointer;
     display: block;
     margin: auto;
@@ -106,7 +107,7 @@
     }
   }
   
-  ::ng-deep.label-file {
+  ::ng-deep.modifyfile {
     display: flex;
   justify-content: center;
   cursor: pointer;

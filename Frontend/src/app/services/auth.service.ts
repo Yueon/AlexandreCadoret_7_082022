@@ -25,7 +25,6 @@ export class AuthService {
 
   IsAuthenticated(){
     return !!localStorage.getItem('token')
-   // return this.loggedIn;
   }
 
   constructor(
@@ -52,8 +51,6 @@ export class AuthService {
             tap(({ userId, token }) => {
                 this.userId = userId;
                 this.token = token;
-                //this.loggedIn = true;
-                //this.isAuth$.next(true);
             })
         );
   }
@@ -75,10 +72,9 @@ getToken() {
 
 logout() {
   localStorage.removeItem('token')
+  localStorage.removeItem('userId')
   this.token = '';
   this.userId = '';
-  //this.loggedIn = false;
-  //this.isAuth$.next(false);
   this.router.navigate(['login']);
 }
 }

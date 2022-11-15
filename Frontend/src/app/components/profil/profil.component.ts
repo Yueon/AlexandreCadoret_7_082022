@@ -71,6 +71,7 @@ export class ProfilComponent implements OnInit {
     this.selectedFile ? (image = this.selectedFile) : (image = this.url);
     const uploadData = new FormData();
     uploadData.append('image', image);
+    console.log("image", image)
     uploadData.append('user', this.userId);
     this.userService.updateImage(this.userId, uploadData)
       .pipe(
@@ -109,19 +110,16 @@ export class ProfilComponent implements OnInit {
     public onDeleteClicked(): void {
       document.getElementById('delete-confirm')?.classList.toggle('profile-delete-confirm__hidden');
     }
-
-    public onChangePassword(): void {
-      const { oldPassword, newPassword } = this.passwordChangeForm.value;
-      if (newPassword && newPassword !== '' && oldPassword && oldPassword !== '') {
-        /*this.userService.updatePassword(this.userId, oldPassword, newPassword)
-          .subscribe((response: HttpResponse) => {
-            if (response.status === 201) {
-              this.passwordChangeForm.reset();
-              this.messageService.add(`Votre mot de passe a bien été modifié`);
-            } else {
-              this.messageService.add(`Erreur: ${response.error.error}`);
-            }
-          });*/
-      }
+    public onDeleteConfirmed(): void {
+      this.userService.deleteUser(this.userId)
+      .pipe(
+        tap(() => {
+          this.authService.logout();
+          this.router.navigateByUrl("", { skipLocationChange: true }).then(() => {
+            this.router.navigate(["/login"]);
+          });
+        })
+      )
+        .subscribe()
     }
-}
+    }

@@ -3,7 +3,7 @@
 </div>
 
 <ng-container *ngIf="content$ | async as content">
-  <p class="mt-30 p-15" *ngIf="!loading && content.length <= 0">Aucun contenu dans cette rubrique...</p>
+  <p class="noContent" *ngIf="!loading && content.length <= 0">Il n'y a actuellement aucun post...</p>
     <section class="publications--list">
         <article *ngFor="let post of content, let index = index" class="post__list">
           <!-- Header Publication : photo de profil, nom, date, et delete -->
@@ -53,13 +53,37 @@
           <footer>
             <div class="like-buttons">
               <div class="likes" id="like" (click)="onLike(post, index)">
-                <i [ngClass]="{ 'fas liked': liked, 'far': !liked, 'disabled': disliked }" class="like fa-thumbs-up fa-lg"></i>
+                <i [ngClass]="{ 'fas liked': post.isLiked == 1, 'far': post.isLiked == 0, 'disabled': post.isDisliked == 1 }" class="like fa-thumbs-up fa-lg"></i>
                 <span>{{ post.likes }}</span>
               </div>
               <div class="likes" id="dislike" (click)="onDislike(post, index)">
-                <i [ngClass]="{ 'fas disliked': disliked, 'far': !disliked, 'disabled': liked }" class="dislike fa-thumbs-down fa-lg"></i>
+                <i [ngClass]="{ 'fas disliked': post.isDisliked == 1, 'far': post.isDisliked == 0, 'disabled': post.isLiked == 1 }" class="dislike fa-thumbs-down fa-lg"></i>
                 <span>{{ post.dislikes }}</span>
               </div>
+            </div>
+            <div class="comments">
+              <h3>Commentaires</h3>
+              <div *ngFor="let comments of post.comments, let index = index" class="comments--list">
+                <div>
+                  <img
+                    [src]="comments.commenterImage"
+                    alt="Photo de profil de {{comments.commenterPseudo}}">
+                </div>
+                <div class="comments--list--text">
+                  <p class="text">
+                    <span>{{comments.commenterPseudo}}</span>
+                  </p>
+                  <p>{{comments.text}}</p>
+                </div>
+                <form class="comments--list--delete" *ngIf="comments.commenterId === user?._id || user?.moderateur === true" (submit)="onDeleteComment(post, comments, index)">
+                  <button type="submit" aria-label="Supprimer le commentaire"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+              <form [formGroup]="commentsForm" class="comments-add" (submit)="onAddComment(post, index)">
+                <label for="add-comments" class="hidden">votre commentaire</label>
+                <input formControlName="text" id="add-comments" type="text" placeholder="Votre commentaire">
+                <button type="submit" aria-label="Envoyer"><i class="fas fa-plus-circle"></i></button>
+              </form>
             </div>
           </footer>
         </article>

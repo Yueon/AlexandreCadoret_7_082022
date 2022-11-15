@@ -7,9 +7,9 @@
                 <h2>Photo de profil</h2>
                 <img [src]="User.image" alt="Photo de profil de {{User.pseudo}}">
                 <form *ngIf="authService.IsAuthenticated()">
-                    <label for="picture" class="btn label-file" aria-label="Changer sa photo de profil">Changer ma photo de profil</label>
+                    <label for="picture" class="profilbtn profillabel-file" aria-label="Changer sa photo de profil">Changer ma photo de profil</label>
                     <input type="file" accept="image/*" id="picture" class="input-file" (change)="onselectFile($event)">
-                    <button type="submit" class="btn save" (click)="saveProfil()" >Enregistrer</button>
+                    <button type="submit" class="profilbtn save" (click)="saveProfil()" >Enregistrer</button>
                 </form>
             </div>
             <div class="profilDescription">
@@ -20,36 +20,23 @@
                  <form [formGroup]="descriptionForm" (submit)="onUpdatedescription()" *ngIf="authService.IsAuthenticated()">
                     <label for="update-description" class="hidden">Description</label>
                     <textarea id="update-description" formControlName="bio" name="bio" placeholder="Votre nouvelle bio"></textarea>
-                    <button type="submit" class="btn description-btn">
+                    <button type="submit" class="profilbtn description-btn">
                       Changer ma description
                     </button>
                   </form>
             </div>
         </div>
-       <!-- <hr *ngIf="authService.IsAuthenticated()">
+        <hr *ngIf="authService.IsAuthenticated()">
         <div class="profileBottom" *ngIf="authService.IsAuthenticated()">
-           <div> -->
-            <!--  ################### MOT DE PASSE ################### -->
-           <!--  <h2>Changer de mot de passe</h2>
-            <form  [formGroup]='passwordChangeForm'>
-              <label for="oldPassword">Mot de passe actuel
-                <input class="passwordInput" type="password" id="oldPassword" formControlName="oldPassword">
-              </label>
-              <label for="newPassword">Nouveau mot de passe
-                <input class="passwordInput" type="password" id="newPassword" formControlName="newPassword">
-              </label>
-              <button type="submit" class="btn">Enregistrer</button>
-            </form>
-          </div>
-          <div> -->
+          <div>
             <!--  ################### SUPPRESSION COMPTE ################### -->
-          <!--  <h2>Supprimer mon compte</h2>
-            <button class="btn btn-danger" (click)="onDeleteClicked()">Supprimer</button>
+           <h2>Supprimer mon compte</h2>
+            <button class="profilbtn btn-danger" (click)="onDeleteClicked()">Supprimer</button>
             <div id="delete-confirm" class="profile-delete-confirm profile-delete-confirm__hidden">
               <p>Êtes-vous vraiment sûr?<br>(impossible de revenir en arrière)</p>
-              <button class="btn btn-danger" >Oui, supprimer</button>
+              <button class="profilbtn btn-danger" (click)="onDeleteConfirmed()">Oui, supprimer</button>
             </div>
           </div>
-        </div> -->
+        </div>
     </section>
 </main>

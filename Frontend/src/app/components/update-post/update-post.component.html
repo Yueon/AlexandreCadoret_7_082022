@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="updateBtn">
-        <label *ngIf="urlFile === ''" for="file" class="label-file" id="label"
+        <label *ngIf="urlFile === ''" for="file" class="modifyfile" id="label"
             >choisir une image</label
         >
         <input
@@ -42,7 +42,7 @@
             (change)="addFile($event)"
         />
     </div>
-    <button [disabled]="modifyForm.invalid" (click)="modifyPost()" class="btn" type="submit">
+    <button [disabled]="modifyForm.invalid" (click)="modifyPost()" class="modifybtn" type="submit">
         Modifier
     </button>
 </form>

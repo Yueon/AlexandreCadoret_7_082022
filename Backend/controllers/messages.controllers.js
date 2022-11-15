@@ -121,6 +121,7 @@ module.exports.like = (req, res, next) => {
             // définition de variables
             let valeurVote;
             let votant = req.body.userId;
+            let islike = post.isLiked;
             let like = post.usersLiked;
             let unlike = post.usersDisliked;
             // determine si l'utilisateur est dans un tableau
@@ -135,6 +136,7 @@ module.exports.like = (req, res, next) => {
                 valeurVote = 0;
             }
             console.log("bon", bon)
+            console.log("islike", islike)
             console.log("mauvais", mauvais)
             console.log("valeur du vote", valeurVote)
             console.log("votant", votant)
@@ -144,6 +146,7 @@ module.exports.like = (req, res, next) => {
             if (valeurVote === 0 && req.body.like === 1) {
                 // ajoute 1 vote positif à likes
                 post.likes += 1;
+                post.isLiked = 1;
                 console.log("A voter", post.likes)
                 // le tableau usersLiked contiendra l'id de l'user
                 post.usersLiked.push(votant);
@@ -151,6 +154,7 @@ module.exports.like = (req, res, next) => {
             } else if (valeurVote === 1 && req.body.like === 0) {
                 // enlève 1 vote positif
                 post.likes -= 1;
+                post.isLiked = 0;
                 console.log("A voter", post.likes)
                 // filtre/enlève l'id du votant du tableau usersLiked
                 const nouveauUsersLiked = like.filter((f) => f != votant);
@@ -160,6 +164,7 @@ module.exports.like = (req, res, next) => {
             } else if (valeurVote === -1 && req.body.like === 0) {
                 // enlève un vote négatif
                 post.dislikes -= 1;
+                post.isDisliked = 0;
                 // filtre/enlève l'id du votant du tableau usersDisliked
                 const nouveauUsersDisliked = unlike.filter((f) => f != votant);
                 // on actualise le tableau
@@ -168,6 +173,7 @@ module.exports.like = (req, res, next) => {
             } else if (valeurVote === 0 && req.body.like === -1) {
                 // ajoute 1 vote positif à unlikes
                 post.dislikes += 1;
+                post.isDisliked = 1;
                 // le tableau usersDisliked contiendra l'id de l'user
                 post.usersDisliked.push(votant);
                 // pour tout autre vote, il ne vient pas de l'index/front donc probabilité de tentative de vote illégal
@@ -181,6 +187,8 @@ module.exports.like = (req, res, next) => {
                 {
                     likes: post.likes,
                     dislikes: post.dislikes,
+                    isLiked: post.isLiked,
+                    isDisliked: post.isDisliked,
                     usersLiked: post.usersLiked,
                     usersDisliked: post.usersDisliked,
                 },
@@ -201,20 +209,20 @@ module.exports.like = (req, res, next) => {
 ///////////////////////////Comments/////////////////////////////
 
 module.exports.commentPost = (req, res) => {
+    console.log('req.body:', req)
     if (!objectId.isValid(req.params.id))
         return res.status(400).send('ID inconnu : ' + req.params.id);
 
     try {
-        console.log('req.body.commenterId', req.body)
         return postModel.findByIdAndUpdate(
             req.params.id,
             {
                 $push: {
                     comments: {
-                        commenterId: req.body.commenterId,
+                        commenterId: objectId(req.body.commenterId),
                         commenterPseudo: req.body.commenterPseudo,
+                        commenterImage: req.body.commenterImage,
                         text: req.body.text,
-                        timestamps: new Date().getTime(),
                     },
                 },
             },
@@ -224,29 +232,6 @@ module.exports.commentPost = (req, res) => {
                 else return res.status(400).send(err);
             }
         );
-    } catch (err) {
-        return res.status(400).send(err);
-    }
-};
-
-module.exports.editCommentPost = (req, res) => {
-    if (!objectId.isValid(req.params.id))
-        return res.status(400).send('ID inconnu : ' + req.params.id);
-
-    try {
-        return postModel.findById(req.params.id, (err, docs) => {
-            const theComment = docs.comments.find((comment) =>
-                comment._id.equals(req.body.commentId)
-            );
-
-            if (!theComment) return res.status(404).send("Comment not found");
-            theComment.text = req.body.text;
-
-            return docs.save((err) => {
-                if (!err) return res.status(200).send(docs);
-                return res.status(500).send(err);
-            });
-        });
     } catch (err) {
         return res.status(400).send(err);
     }

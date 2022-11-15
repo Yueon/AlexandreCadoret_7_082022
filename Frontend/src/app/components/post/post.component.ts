@@ -56,22 +56,18 @@ export class PostComponent implements OnInit {
 
   createPost() {
     const content = this.postForm.get("content")!.value;
-    console.log('content', content);
     const picture = this.postForm.get("file")!.value;
-    console.log('picture', picture);
-    console.log('url', this.url);
     const posterId = this.userId;
-    console.log('posterId', this.userId);
     const posterPseudo = this.User.pseudo;
-    console.log('poster', this.User);
-    console.log('posterPseudo', this.User.pseudo);
     // faire appel au userId dans le ngOnInit et le recup la avec le pseudo
     const formData = new FormData();
     console.log("formData", formData)
     if (picture !== null) {
         formData.append('picture', this.url);
     }
-    formData.append('content', content);
+    if (content !== null) {
+      formData.append('content', content);
+    }
     formData.append('posterId', posterId);
     formData.append('posterPseudo', posterPseudo);
     
@@ -118,11 +114,11 @@ export class PostComponent implements OnInit {
         });
   }
 
-  addFile($event: any) {
-    this.selectedFile = $event.target.files[0];
+  addFile(event: any) {
+    this.selectedFile = event.target.files[0];
     let reader = new FileReader();
 
-    reader.readAsDataURL($event.target.files[0]);
+    reader.readAsDataURL(event.target.files[0]);
     reader.onload = (event: any) => {
         this.url = event.target.result;
     };

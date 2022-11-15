@@ -12,13 +12,20 @@ const postSchemas = new mongoose.Schema(
         picture: { type: String },
         likes: { type: Number, required: true, default: 0 },
         dislikes: { type: Number, required: true, default: 0 },
+        isLiked: { type: Number, require: true, default: 0 },
+        isDisliked: { type: Number, require: true, default: 0 },
         usersLiked: { type: [String] },
         usersDisliked: { type: [String] },
         comments: {
             type: [
                 {
-                    commenterId: String,
-                    posterPseudo: String,
+                    commenterId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: 'user',
+                        required: true,
+                    },
+                    commenterPseudo: String,
+                    commenterImage: String,
                     text: String,
                     timestamp: Number,
                 }

@@ -13,6 +13,7 @@ import { PostModel } from 'src/app/interfaces/posts';
 import { UserModel } from "src/app/interfaces/user";
 import { HttpResponse } from 'src/app/interfaces/http-response';
 import { UpdatePostComponent } from "../update-post/update-post.component";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-post-wall',
@@ -21,8 +22,6 @@ import { UpdatePostComponent } from "../update-post/update-post.component";
 })
 export class PostWallComponent implements OnInit {
   loading!: boolean;
-  currentPage: any = '';
-  pageSize: any = '';
   obsArrayContent: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   content$: Observable<any> = this.obsArrayContent.asObservable();
   user: UserModel | undefined;
@@ -31,12 +30,14 @@ export class PostWallComponent implements OnInit {
   post!: PostModel;
   posterId!: string;
   like!: number;
-  liked!: boolean
+  liked!: boolean;
   disliked!: boolean;
+  commentsForm!: FormGroup;
 
   constructor(
     private publicationsService: PublicationsService,
     public authService: AuthService,
+    private formBuilder: FormBuilder,
     private messagesService: MessagesService,
     public userService: UserService,
     private dialog: MatDialog,
@@ -71,13 +72,9 @@ export class PostWallComponent implements OnInit {
         .subscribe((data) => {
           this.obsArrayContent.next(data);
         });
-        /*this.content$.forEach(post => {
-          if(post.usersLiked.includes(this.user?._id)) {
-            this.liked = true;
-          } else if (post.usersDisliked.includes(this.user?._id)) {
-            this.disliked = true;
-          }
-        });*/
+        this.commentsForm = this.formBuilder.group({
+          text: [null, [Validators.required, Validators.maxLength(1000)]],
+      });
 }
 
 onLike(post: any, index: number) {
@@ -85,15 +82,15 @@ onLike(post: any, index: number) {
     console.log('Déja Dislike')
   }else{
   if(post.usersLiked.includes(this.user?._id)) {
-    this.liked = false;
     this.like = 0;
+
     this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
         this.content$
             .pipe(
                 take(1),
                 map((data) => {
                     data[index].likes--;
-                   
+                    data[index].isLiked--;
                     return data;
                 })
             )
@@ -103,7 +100,6 @@ onLike(post: any, index: number) {
               });
     });
   }else{
-    this.liked = true;
     this.like = 1;
       this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
           this.content$
@@ -111,6 +107,7 @@ onLike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].likes++;
+                      data[index].isLiked++;
                       return data;
                   })
               )
@@ -127,7 +124,6 @@ onDislike(post: any, index: number) {
   }else{
   if(post.usersDisliked.includes(this.user?._id)) {
     console.log('déjà voté')
-      this.disliked = false;
       this.like = 0;
       this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
           this.content$
@@ -135,7 +131,7 @@ onDislike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].dislikes--;
-               
+                      data[index].isDisliked--;
                       return data;
                   })
               )
@@ -146,7 +142,6 @@ onDislike(post: any, index: number) {
       });
   } else {
     console.log('pas encore voté')
-    this.disliked = true;
       this.like = -1;
       this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
           this.content$
@@ -154,7 +149,7 @@ onDislike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].dislikes++;
-                   
+                      data[index].isDisliked++;
                       return data;
                   })
               )
@@ -189,6 +184,59 @@ public onDeletePublication(post: any, index: number): void {
   })
 }
 
+public onAddComment(post: any, index: any): void {
+  const text = this.commentsForm.get("text")!.value;
+  const commenterId = post.posterId._id;
+  const commenterPseudo = post.posterPseudo;
+  const commenterImage = post.posterId.image;
+  console.log('commenterImage', commenterImage)
+  const postId = post._id;
+  this.publicationsService.newComment(postId, text, commenterId, commenterPseudo, commenterImage)
+  .subscribe(() => {
+    this.content$
+      .pipe(
+        take(1),
+        map((data: any) => {
+          let newData = [];
+          for (let content of data) {
+            content.posterId._id !== post.posterId._id ? newData.push(content) : null;
+          }
+          return newData
+        })
+      )
+    .subscribe((data) => {
+      this.obsArrayContent.next(data);
+      this.router.navigateByUrl("", { skipLocationChange: true}).then(() => {
+        this.router.navigate(["/home"]);
+      })
+    })
+  }
+)}
+
+public onDeleteComment(post: any, comments: any, index: number): void {
+  const commentId = comments._id;
+  console.log(comments._id, "post")
+  console.log("commentId", commentId)
+  this.publicationsService.deleteComment(post._id, commentId).subscribe(() => {
+    this.content$
+      .pipe(
+        take(1),
+        map((data: any) => {
+          let newData = [];
+          for (let content of data) {
+            content.posterId._id !== post.posterId._id ? newData.push(content) : null;
+          }
+          return newData
+        })
+      )
+      .subscribe((data) => {
+        this.obsArrayContent.next(data);
+        this.router.navigateByUrl("", { skipLocationChange: true}).then(() => {
+          this.router.navigate(["/home"]);
+        })
+    });
+  })
+}
 modifyPost(post: any) {
   const dialogConfig = new MatDialogConfig();
   dialogConfig.disableClose = false;

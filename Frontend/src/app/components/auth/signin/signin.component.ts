@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth.service';
 import { MessagesService } from 'src/app/services/messages.service';
@@ -18,6 +19,7 @@ signInForm!: FormGroup;
     private authService: AuthService,
     private messagesService: MessagesService,
     private formBuilder: FormBuilder,
+    private router: Router,
   ) { }
 
   public ngOnInit(): void {
@@ -44,6 +46,7 @@ signInForm!: FormGroup;
             console.log(res)
             localStorage.setItem('token', res.token)
             localStorage.setItem('userId', res.userId)
+            this.router.navigate(['/home']);
           });
         } else {
           this.messagesService.add(`Erreur: ${response.error.error}`);

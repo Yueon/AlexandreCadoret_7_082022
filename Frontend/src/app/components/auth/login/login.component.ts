@@ -41,9 +41,6 @@ errorMsg!: string;
     this.authService.loginUser(email, password)
     .pipe(
       tap(() => {
-        const id = this.authService.getUserId();
-
-        this.userService.getUserById(id)
         this.router.navigate(['/home']);
       }),
       catchError((error) => {

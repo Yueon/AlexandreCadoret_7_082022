@@ -74,4 +74,21 @@ likePost(id: string, like: number) {
     catchError(error => throwError(error.error.message))
   );
 }
+
+public newComment(id: any, text: any, commenterId: any, commenterPseudo: any, commenterImage: any) {
+  console.log('commenterPseudo:', commenterPseudo)
+  return this.HttpClient.patch('http://localhost:3000/api/post/' + 'comment-post/' + id, {text, commenterId, commenterPseudo, commenterImage}, { withCredentials: true, observe: 'response' })
+    .pipe(catchError(err => {
+      this.log(`Erreur: ${err.statusText}`);
+      return of(err);
+    }));
+}
+
+deleteComment(id: any, commentId: any): Observable<HttpResponse> {
+  return this.HttpClient.patch('http://localhost:3000/api/post/' + 'delete-comment-post/' + id, {commentId}, { withCredentials: true, observe: 'response' })
+    .pipe(catchError(err => {
+      this.log(`Erreur: ${err.statusText}`);
+      return of(err);
+    }));
+}
 }

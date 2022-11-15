@@ -21,6 +21,7 @@
 
     input {
       width: 100%;
+      outline: 0;
       border: none;
       border-bottom: 1px solid $color-primary;
       &:focus {
@@ -32,7 +33,7 @@
       }
     }
 
-    .btn {
+    .cobtn {
       display: block;
       margin: auto;
       padding: 0.7em 1.5em;

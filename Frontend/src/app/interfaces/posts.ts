@@ -16,6 +16,8 @@ interface Comment {
       picture: String,
       likes: number,
       dislikes: number,
+      isLiked?: number,
+      isDisliked?: number,
       usersLiked: String[],
       usersDisliked: String[],
       date: string,

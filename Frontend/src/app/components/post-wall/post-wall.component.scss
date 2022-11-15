@@ -3,6 +3,12 @@
 .hidden {
   display: none;
 }
+.noContent{
+  margin-top: 30px;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
 .publications {
   &--list {
     article {
@@ -105,9 +111,6 @@ footer {
       padding: 0.5em;
       background: $color-back-background;
       cursor: pointer;
-      &:hover {
-        background: $color-primary-light;
-      }
     }
     .dislike {
       margin-right: 1%;
@@ -184,6 +187,9 @@ z-index: 1000;
   max-width: 100%;
   max-height: 100%;
 }
+::ng-deep.mat-menu-content:not(:empty){
+  margin-top: -8px;
+}
 .like-buttons {
   display: flex;
   i {
@@ -204,24 +210,90 @@ z-index: 1000;
   color: rgba(219, 51, 0, 1);
 }
 
-.like {
-  &:hover {
-    color: rgba(51, 219, 0, 1);
-  }
-}
-
-.dislike {
-  &:hover {
-    color: rgba(219, 51, 0, 1);
-  }
-}
-
 .disabled {
   cursor: none;
   &:hover {
     color: rgba(190, 190, 190, 1);
   }
   color: rgba(190, 190, 190, 1);
+}
+
+.comments{
+  padding: 1em, 2em;
+  clear: both;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 3%;
+  &--list{
+    margin: 0.7em 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    &--text{
+      flex-grow: 2;
+    }
+    &--delete{
+      button {
+        margin-left: 0.5em;
+        padding: 0.5em 0.7em;
+        border: 1px solid $color-danger;
+        border-radius: 10px;
+        background: $color-danger-lighter;
+        cursor: pointer;
+        &:hover {
+          background: $color-danger-light;
+        }
+      }
+      .fas {
+        font-size: 1.2em;
+        color: $color-danger;
+      }
+    }
+  }img {
+    width: 60px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 1em;
+    object-fit: cover;
+    height: 60px;
+  }
+}
+.text{
+  font-style: italic;
+        span {
+          color: $color-primary;
+        }
+}
+.comments-add{
+  display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        input {
+          flex-grow: 2;
+          min-width: 0;
+          padding: 0 1em;
+          border: 1px solid $color-primary;
+          height: 3rem;
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+          outline: 0;
+        }
+        button {
+          background: $color-primary-lighter;
+          border: 1px solid $color-primary;
+          border-left: none;
+          height: 3rem;
+          width: 3rem;
+          font-size: 1.2em;
+          color: $color-primary;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          cursor: pointer;
+          &:hover {
+            background: $color-primary-light;
+          }
+        }
 }
 
 @media all and (max-width: 900px) {

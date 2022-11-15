@@ -34,6 +34,7 @@
     resize: none;
     border: none;
     padding: 1em;
+    outline: 0;
   }
   .description-btn {
     width: 100%;
@@ -42,7 +43,7 @@
     border-radius: 0;
   }
 }
-.btn {
+.profilbtn {
   cursor: pointer;
   display: block;
   margin: auto;
@@ -50,6 +51,8 @@
   background: $color-primary-lighter;
   border: 1px solid $color-primary;
   border-radius: 5px;
+  font-weight: bold;
+  color: $color-text;
   &:hover {
     background: $color-primary-light;
   }
@@ -64,7 +67,7 @@
     box-shadow: $shadow;
     background: $color-cards-background;
     }
-    .label-file {
+    .profillabel-file {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       border-top: none;
@@ -87,6 +90,7 @@
       width: 100%;
       border-radius: 0px 0px 5px 5px;
       margin-top: -4px;
+      font-size: 14px;
     }
 
     .profileBottom {
