@@ -90,7 +90,6 @@ onLike(post: any, index: number) {
                 take(1),
                 map((data) => {
                     data[index].likes--;
-                    data[index].isLiked--;
                     return data;
                 })
             )
@@ -107,7 +106,6 @@ onLike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].likes++;
-                      data[index].isLiked++;
                       return data;
                   })
               )
@@ -131,7 +129,6 @@ onDislike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].dislikes--;
-                      data[index].isDisliked--;
                       return data;
                   })
               )
@@ -149,7 +146,6 @@ onDislike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].dislikes++;
-                      data[index].isDisliked++;
                       return data;
                   })
               )
@@ -186,10 +182,9 @@ public onDeletePublication(post: any, index: number): void {
 
 public onAddComment(post: any, index: any): void {
   const text = this.commentsForm.get("text")!.value;
-  const commenterId = post.posterId._id;
-  const commenterPseudo = post.posterPseudo;
-  const commenterImage = post.posterId.image;
-  console.log('commenterImage', commenterImage)
+  const commenterId = this.user!._id;
+  const commenterPseudo = this.user!.pseudo;
+  const commenterImage = this.user!.image;
   const postId = post._id;
   this.publicationsService.newComment(postId, text, commenterId, commenterPseudo, commenterImage)
   .subscribe(() => {

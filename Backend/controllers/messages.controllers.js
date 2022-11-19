@@ -146,7 +146,6 @@ module.exports.like = (req, res, next) => {
             if (valeurVote === 0 && req.body.like === 1) {
                 // ajoute 1 vote positif à likes
                 post.likes += 1;
-                post.isLiked = 1;
                 console.log("A voter", post.likes)
                 // le tableau usersLiked contiendra l'id de l'user
                 post.usersLiked.push(votant);
@@ -154,7 +153,6 @@ module.exports.like = (req, res, next) => {
             } else if (valeurVote === 1 && req.body.like === 0) {
                 // enlève 1 vote positif
                 post.likes -= 1;
-                post.isLiked = 0;
                 console.log("A voter", post.likes)
                 // filtre/enlève l'id du votant du tableau usersLiked
                 const nouveauUsersLiked = like.filter((f) => f != votant);
@@ -164,7 +162,6 @@ module.exports.like = (req, res, next) => {
             } else if (valeurVote === -1 && req.body.like === 0) {
                 // enlève un vote négatif
                 post.dislikes -= 1;
-                post.isDisliked = 0;
                 // filtre/enlève l'id du votant du tableau usersDisliked
                 const nouveauUsersDisliked = unlike.filter((f) => f != votant);
                 // on actualise le tableau
@@ -173,7 +170,6 @@ module.exports.like = (req, res, next) => {
             } else if (valeurVote === 0 && req.body.like === -1) {
                 // ajoute 1 vote positif à unlikes
                 post.dislikes += 1;
-                post.isDisliked = 1;
                 // le tableau usersDisliked contiendra l'id de l'user
                 post.usersDisliked.push(votant);
                 // pour tout autre vote, il ne vient pas de l'index/front donc probabilité de tentative de vote illégal
@@ -187,8 +183,6 @@ module.exports.like = (req, res, next) => {
                 {
                     likes: post.likes,
                     dislikes: post.dislikes,
-                    isLiked: post.isLiked,
-                    isDisliked: post.isDisliked,
                     usersLiked: post.usersLiked,
                     usersDisliked: post.usersDisliked,
                 },

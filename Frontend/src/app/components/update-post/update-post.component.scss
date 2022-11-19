@@ -136,3 +136,10 @@ font-weight: bold;
   ::ng-deep.mat-dialog-container app-post {
     width: 100%;
   }
+
+
+  @media all and (max-width: 900px) {
+    ::ng-deep.cdk-global-overlay-wrapper {
+      height: 1350px;
+    }
+  }
