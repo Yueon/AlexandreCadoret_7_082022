@@ -49,31 +49,25 @@ module.exports.createPost = async (req, res) => {
 };
 
 module.exports.updatePost = (req, res, next) => {
-    console.log('ok')
     postModel.findOne({ _id: req.params.id })
         .then(postModel => {
             if (!postModel) {
                 return res.status(401).json({ error });
             }
-            console.log('ok')
             userModel.findOne({ _id: req.auth })
                 .then(userModel => {
-                    console.log('ok')
                     if (!userModel) {
                         return res.status(401).json({ error });
                     }
-                    console.log('ok')
                     if (userModel.moderateur === true || postModel.posterId._id.toString() === req.auth) {
                         const updateRecord = {
                             content: req.body.content,
                             picture: req.body.picture,
                         }
-                        console.log('updateRecord', updateRecord)
                         postModel.update(
                             { $set: updateRecord },
                             { new: true },
                             (err, docs) => {
-                                console.log(err, docs, "6")
                                 if (!err) res.send(docs);
                                 else console.log("Update error : " + err);
                             }
@@ -135,25 +129,17 @@ module.exports.like = (req, res, next) => {
             } else {
                 valeurVote = 0;
             }
-            console.log("bon", bon)
-            console.log("islike", islike)
-            console.log("mauvais", mauvais)
-            console.log("valeur du vote", valeurVote)
-            console.log("votant", votant)
-            console.log("reqBodyLike", req.body.like)
             // ce comparateur va determiner le vote de l'utilisateur par rapport à une action de vote
             // si l'utilisateur n'a pas voté avant et vote positivement
             if (valeurVote === 0 && req.body.like === 1) {
                 // ajoute 1 vote positif à likes
                 post.likes += 1;
-                console.log("A voter", post.likes)
                 // le tableau usersLiked contiendra l'id de l'user
                 post.usersLiked.push(votant);
                 // si l'user a voté positivement et veut annuler son vote
             } else if (valeurVote === 1 && req.body.like === 0) {
                 // enlève 1 vote positif
                 post.likes -= 1;
-                console.log("A voter", post.likes)
                 // filtre/enlève l'id du votant du tableau usersLiked
                 const nouveauUsersLiked = like.filter((f) => f != votant);
                 // on actualise le tableau

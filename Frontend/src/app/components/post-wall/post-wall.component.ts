@@ -79,25 +79,19 @@ export class PostWallComponent implements OnInit {
 
 onLike(post: any, index: number) {
   if(post.usersDisliked.includes(this.user?._id)){
-    console.log('Déja Dislike')
   }else{
   if(post.usersLiked.includes(this.user?._id)) {
     this.like = 0;
-
     this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
         this.content$
             .pipe(
                 take(1),
                 map((data) => {
                     data[index].likes--;
-                    return data;
-                })
-            )
+                    return data;}))
             this.publicationsService.getPublications()
               .subscribe((newArr) => {
-                  this.obsArrayContent.next(newArr);
-              });
-    });
+                  this.obsArrayContent.next(newArr);});});
   }else{
     this.like = 1;
       this.publicationsService.likePost(post._id, this.like).subscribe((data) => {
@@ -106,9 +100,7 @@ onLike(post: any, index: number) {
                   take(1),
                   map((data) => {
                       data[index].likes++;
-                      return data;
-                  })
-              )
+                      return data;}))
               this.publicationsService.getPublications()
               .subscribe((newArr) => {
                   this.obsArrayContent.next(newArr);
